@@ -1,0 +1,657 @@
+html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>About — E-Vast Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --black:#0a0a0a;
+  --off-white:#f0ede6;
+  --dim:#7a7672;
+  --accent:#e8a020;
+  --border:rgba(240,237,230,0.1);
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+  --font-mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--off-white);font-family:var(--font-body);font-size:16px;line-height:1.6;cursor:none;overflow-x:hidden;}
+
+/* CURSOR */
+#cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(232,160,32,.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,opacity .2s;}
+body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:18px;height:18px;}
+body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:56px;height:56px;opacity:.4;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:72px;border-bottom:1px solid var(--border);background:rgba(10,10,10,.88);backdrop-filter:blur(12px);}
+.nav-logo{font-family:var(--font-display);font-size:28px;letter-spacing:.06em;color:var(--off-white);text-decoration:none;}
+.nav-logo span{color:var(--accent);}
+.nav-links{display:flex;gap:40px;list-style:none;}
+.nav-links a{font-family:var(--font-mono);font-size:11px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--off-white);}
+.nav-cta{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:var(--accent);color:var(--black);border:none;padding:10px 24px;cursor:none;transition:background .2s,transform .15s;}
+.nav-cta:hover{background:#f0b030;transform:translateY(-1px);}
+
+/* ── HERO / MANIFESTO ── */
+.about-hero{
+  min-height:100vh;
+  display:grid;
+  grid-template-rows:1fr auto;
+  padding:0 48px 72px;
+  position:relative;
+  overflow:hidden;
+  border-bottom:1px solid var(--border);
+}
+.hero-bg-text{
+  position:absolute;
+  font-family:var(--font-display);
+  font-size:clamp(200px,28vw,420px);
+  color:rgba(240,237,230,.018);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  white-space:nowrap;
+  pointer-events:none;
+  letter-spacing:.04em;
+  user-select:none;
+}
+.hero-grid-lines{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(240,237,230,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(240,237,230,.025) 1px,transparent 1px);
+  background-size:80px 80px;
+  pointer-events:none;
+}
+.hero-content{
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding-top:160px;
+}
+.hero-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:28px;display:flex;align-items:center;gap:14px;opacity:0;animation:fadeUp .8s ease .3s forwards;}
+.hero-label::before{content:'';display:block;width:28px;height:1px;background:var(--accent);}
+.hero-manifesto{
+  font-family:var(--font-display);
+  font-size:clamp(72px,11vw,148px);
+  line-height:.9;
+  letter-spacing:.01em;
+  color:var(--off-white);
+  opacity:0;
+  animation:fadeUp .9s ease .5s forwards;
+}
+.hero-manifesto .accent{color:var(--accent);}
+.hero-manifesto .italic{font-style:italic;}
+.hero-bottom{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  padding-top:64px;
+  border-top:1px solid var(--border);
+  opacity:0;
+  animation:fadeUp .9s ease .75s forwards;
+}
+.hero-descriptor{font-size:17px;font-weight:300;color:var(--dim);line-height:1.8;max-width:480px;}
+.hero-descriptor strong{color:var(--off-white);font-weight:400;}
+.hero-founding{display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-end;gap:6px;}
+.founding-year{font-family:var(--font-display);font-size:96px;color:rgba(240,237,230,.15);line-height:1;}
+.founding-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);}
+
+/* ── BIG IDEA SECTION ── */
+.big-idea{
+  padding:120px 48px;
+  border-bottom:1px solid var(--border);
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:100px;
+  align-items:start;
+}
+.big-idea-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:14px;padding-top:8px;}
+.big-idea-label::before{content:'';display:block;width:28px;height:1px;background:var(--accent);}
+.big-idea-content{}
+.big-idea-quote{
+  font-family:var(--font-display);
+  font-size:clamp(44px,6vw,80px);
+  line-height:1;
+  letter-spacing:.01em;
+  color:var(--off-white);
+  margin-bottom:48px;
+}
+.big-idea-quote span{color:var(--accent);}
+.big-idea-body{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:48px;
+}
+.idea-para{font-size:15px;font-weight:300;color:var(--dim);line-height:1.85;}
+.idea-para strong{color:var(--off-white);font-weight:400;}
+
+/* ── PHILOSOPHY PILLARS ── */
+.philosophy{
+  padding:0 48px 0;
+  border-bottom:1px solid var(--border);
+}
+.philosophy-header{
+  padding:80px 0 64px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+.section-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:14px;}
+.section-label::before{content:'';display:block;width:28px;height:1px;background:var(--accent);}
+.section-title{font-family:var(--font-display);font-size:clamp(52px,7vw,88px);line-height:.93;letter-spacing:.01em;color:var(--off-white);}
+.philosophy-header-right{font-size:14px;font-weight:300;color:var(--dim);max-width:300px;text-align:right;line-height:1.7;}
+
+.pillars-list{}
+.pillar-row{
+  display:grid;
+  grid-template-columns:80px 1fr 1fr;
+  gap:0;
+  border-bottom:1px solid var(--border);
+  transition:background .25s;
+}
+.pillar-row:hover{background:rgba(240,237,230,.02);}
+.pillar-num{
+  font-family:var(--font-mono);font-size:12px;font-weight:300;
+  letter-spacing:.2em;color:var(--dim);
+  padding:48px 0;
+  border-right:1px solid var(--border);
+  display:flex;align-items:flex-start;
+}
+.pillar-left{padding:48px 56px 48px 48px;border-right:1px solid var(--border);}
+.pillar-name{font-family:var(--font-display);font-size:40px;letter-spacing:.03em;color:var(--off-white);line-height:1;margin-bottom:12px;}
+.pillar-tag{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}
+.pillar-right{padding:48px 48px 48px 56px;display:flex;flex-direction:column;justify-content:center;}
+.pillar-desc{font-size:14px;font-weight:300;color:var(--dim);line-height:1.8;}
+.pillar-desc strong{color:var(--off-white);font-weight:400;}
+
+/* ── STORY TIMELINE ── */
+.story-section{padding:120px 48px;border-bottom:1px solid var(--border);}
+.story-grid{display:grid;grid-template-columns:280px 1fr;gap:100px;}
+.story-label{}
+.story-timeline{display:flex;flex-direction:column;gap:0;}
+.timeline-item{
+  display:grid;
+  grid-template-columns:100px 1fr;
+  gap:40px;
+  padding:44px 0;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.timeline-item:last-child{border-bottom:none;}
+.timeline-year{
+  font-family:var(--font-display);
+  font-size:44px;
+  color:rgba(240,237,230,.2);
+  line-height:1;
+  transition:color .3s;
+}
+.timeline-item:hover .timeline-year{color:var(--accent);}
+.timeline-content{}
+.timeline-title{font-family:var(--font-display);font-size:28px;letter-spacing:.03em;color:var(--off-white);margin-bottom:12px;line-height:1;}
+.timeline-desc{font-size:14px;font-weight:300;color:var(--dim);line-height:1.75;}
+.timeline-desc strong{color:var(--off-white);font-weight:400;}
+
+/* ── TEAM ── */
+.team-section{padding:120px 48px;border-bottom:1px solid var(--border);}
+.team-header{margin-bottom:64px;}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);}
+.team-card{
+  background:var(--black);
+  padding:48px 40px;
+  position:relative;
+  overflow:hidden;
+  transition:background .3s;
+}
+.team-card:hover{background:#0f0f0f;}
+.team-card::before{
+  content:'';
+  position:absolute;bottom:0;left:0;
+  width:0;height:2px;
+  background:var(--accent);
+  transition:width .4s ease;
+}
+.team-card:hover::before{width:100%;}
+.team-avatar{
+  width:72px;height:72px;
+  border-radius:0;
+  background:rgba(232,160,32,.1);
+  border:1px solid rgba(232,160,32,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);
+  font-size:28px;
+  color:var(--accent);
+  margin-bottom:28px;
+  transition:background .3s,border-color .3s;
+}
+.team-card:hover .team-avatar{background:rgba(232,160,32,.18);border-color:rgba(232,160,32,.4);}
+.team-name{font-family:var(--font-display);font-size:32px;letter-spacing:.03em;color:var(--off-white);line-height:1;margin-bottom:6px;}
+.team-role{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;}
+.team-bio{font-size:13px;font-weight:300;color:var(--dim);line-height:1.75;}
+
+/* ── NUMBERS STRIP ── */
+.numbers-strip{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--border);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.number-cell{
+  background:var(--black);
+  padding:52px 48px;
+  position:relative;
+  overflow:hidden;
+}
+.number-cell::after{content:'';position:absolute;bottom:0;left:48px;width:0;height:2px;background:var(--accent);transition:width .4s ease;}
+.number-cell:hover::after{width:calc(100% - 96px);}
+.number-cell .num{font-family:var(--font-display);font-size:72px;color:var(--off-white);line-height:1;margin-bottom:8px;}
+.number-cell .num span{color:var(--accent);}
+.number-cell .desc{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);}
+
+/* ── CULTURE STATEMENT ── */
+.culture-section{
+  padding:120px 48px;
+  border-bottom:1px solid var(--border);
+  background:#0d0d0d;
+}
+.culture-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+.culture-left{}
+.culture-headline{
+  font-family:var(--font-display);
+  font-size:clamp(48px,6.5vw,84px);
+  line-height:.95;
+  letter-spacing:.01em;
+  color:var(--off-white);
+  margin-bottom:48px;
+}
+.culture-headline span{color:var(--accent);}
+.culture-old-new{display:flex;flex-direction:column;gap:2px;background:var(--border);}
+.culture-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:var(--border);
+}
+.culture-cell{
+  background:var(--black);
+  padding:20px 28px;
+  font-size:14px;
+  font-weight:300;
+  color:var(--dim);
+  position:relative;
+}
+.culture-cell.new-thinking{color:var(--off-white);}
+.culture-cell.new-thinking::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--accent);}
+.culture-col-header{
+  background:#0e0e0e;
+  padding:14px 28px;
+  font-family:var(--font-mono);
+  font-size:10px;
+  font-weight:300;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+.culture-col-header.old{color:var(--dim);}
+.culture-col-header.new{color:var(--accent);}
+
+.culture-right{display:flex;flex-direction:column;gap:32px;}
+.culture-value{padding:32px 36px;border:1px solid var(--border);position:relative;overflow:hidden;transition:border-color .3s,background .3s;}
+.culture-value:hover{border-color:rgba(232,160,32,.3);background:rgba(232,160,32,.03);}
+.culture-value-num{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;color:var(--accent);margin-bottom:12px;}
+.culture-value-title{font-family:var(--font-display);font-size:26px;letter-spacing:.03em;color:var(--off-white);margin-bottom:10px;}
+.culture-value-desc{font-size:13px;font-weight:300;color:var(--dim);line-height:1.7;}
+
+/* ── BOTTOM CTA ── */
+.page-cta{padding:100px 48px;border-top:1px solid var(--border);}
+.cta-headline{font-family:var(--font-display);font-size:clamp(52px,8vw,108px);line-height:.92;letter-spacing:.01em;color:var(--off-white);margin-bottom:52px;max-width:820px;}
+.cta-headline span{color:var(--accent);}
+.cta-buttons{display:flex;gap:16px;}
+.btn-primary{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;background:var(--accent);color:var(--black);border:none;padding:16px 36px;cursor:none;font-weight:400;transition:background .2s,transform .15s;text-decoration:none;display:inline-block;}
+.btn-primary:hover{background:#f0b030;transform:translateY(-2px);}
+.btn-ghost{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;background:transparent;color:var(--off-white);border:1px solid var(--border);padding:16px 36px;cursor:none;transition:border-color .2s,transform .15s;text-decoration:none;display:inline-block;}
+.btn-ghost:hover{border-color:rgba(240,237,230,.4);transform:translateY(-2px);}
+
+/* FOOTER */
+.footer-strip{border-top:1px solid var(--border);padding:28px 48px;display:flex;justify-content:space-between;align-items:center;}
+.footer-strip span,.footer-strip a{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--dim);text-decoration:none;}
+.footer-strip a:hover{color:var(--off-white);}
+.footer-strip-links{display:flex;gap:28px;}
+
+/* ANIM */
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:.1s;}
+.reveal-delay-2{transition-delay:.2s;}
+.reveal-delay-3{transition-delay:.3s;}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a class="nav-logo" href="evast-homepage.html"><span>E</span>-VAST</a>
+  <ul class="nav-links">
+    <li><a href="evast-homepage.html">Home</a></li>
+    <li><a href="#" class="active">About</a></li>
+    <li><a href="evast-services.html">Services</a></li>
+    <li><a href="evast-projects.html">Projects</a></li>
+    <li><a href="evast-contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="window.location.href='evast-contact.html'">Get Started</button>
+</nav>
+
+<!-- HERO MANIFESTO -->
+<div class="about-hero">
+  <div class="hero-bg-text">E-VAST</div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-content">
+    <div class="hero-label">About E-Vast</div>
+    <h1 class="hero-manifesto">
+      We Don't<br/>
+      Help Brands<br/>
+      Show Up.<br/>
+      <span class="accent">We Make Sure</span><br/>
+      They Cannot<br/>
+      <span class="accent">Be Ignored.</span>
+    </h1>
+  </div>
+  <div class="hero-bottom">
+    <p class="hero-descriptor">
+      E-Vast is a <strong>Creative PR & Marketing Agency</strong> that designs and executes high-impact campaigns that drive attention, influence perception, and convert audiences into revenue.<br/><br/>
+      We are not a social media management company. We are not a content factory. We are a <strong>strategic growth partner</strong> for brands that are serious about dominance.
+    </p>
+    <div class="hero-founding">
+      <div class="founding-year">2020</div>
+      <div class="founding-label">Founded in Lagos, Nigeria</div>
+    </div>
+  </div>
+</div>
+
+<!-- BIG IDEA -->
+<div class="big-idea reveal">
+  <div class="big-idea-label">The Big Idea</div>
+  <div class="big-idea-content">
+    <div class="big-idea-quote">
+      "Content without<br/>strategy is noise.<br/>We build campaigns<br/>that <span>cut through.</span>"
+    </div>
+    <div class="big-idea-body">
+      <p class="idea-para">
+        When E-Vast was founded, the agency landscape was full of people selling posts, selling designs, selling management. Every brand was being told to "just be consistent" while the market moved faster than any posting schedule could keep up with.<br/><br/>
+        We built something different. A system that <strong>engineers attention</strong> — not begs for it.
+      </p>
+      <p class="idea-para">
+        Today, E-Vast operates as a full Creative PR & Marketing agency with four specialised units working as one machine: High-Level PR, Paid Media Performance, Creative Campaigns, and Brand Growth Systems.<br/><br/>
+        <strong>Our edge is our X influencer network</strong> — exclusive, curated, strategic. We don't chase virality. We engineer it.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- PHILOSOPHY PILLARS -->
+<div class="philosophy">
+  <div class="philosophy-header reveal">
+    <div>
+      <div class="section-label">How We Think</div>
+      <h2 class="section-title">Our Four<br/>Pillars.</h2>
+    </div>
+    <p class="philosophy-header-right">Every service, every campaign, every decision runs through one of these four operating principles.</p>
+  </div>
+  <div class="pillars-list">
+    <div class="pillar-row reveal">
+      <div class="pillar-num">01</div>
+      <div class="pillar-left">
+        <div class="pillar-name">Attention<br/>Engineering</div>
+        <div class="pillar-tag">High-Level PR Unit</div>
+      </div>
+      <div class="pillar-right">
+        <p class="pillar-desc">We don't hope people notice our clients. We <strong>design the moment</strong> they become impossible to ignore. Through narrative control, cultural moment identification, and our exclusive influencer network, we place brands into the conversations that define markets.</p>
+      </div>
+    </div>
+    <div class="pillar-row reveal reveal-delay-1">
+      <div class="pillar-num">02</div>
+      <div class="pillar-left">
+        <div class="pillar-name">Revenue<br/>Conversion</div>
+        <div class="pillar-tag">Paid Media Unit</div>
+      </div>
+      <div class="pillar-right">
+        <p class="pillar-desc">Attention without conversion is vanity. We build <strong>full-funnel paid media systems</strong> that take the visibility we create and turn it into measurable revenue — with data, discipline, and zero wasted spend.</p>
+      </div>
+    </div>
+    <div class="pillar-row reveal reveal-delay-2">
+      <div class="pillar-num">03</div>
+      <div class="pillar-left">
+        <div class="pillar-name">Cultural<br/>Impact</div>
+        <div class="pillar-tag">Creative Campaigns Unit</div>
+      </div>
+      <div class="pillar-right">
+        <p class="pillar-desc">We think in campaigns, not content. Every creative brief we receive gets treated like a <strong>cultural moment waiting to happen</strong>. We develop the big idea, the narrative, the storytelling architecture that makes people remember your brand long after the campaign ends.</p>
+      </div>
+    </div>
+    <div class="pillar-row reveal reveal-delay-3">
+      <div class="pillar-num">04</div>
+      <div class="pillar-left">
+        <div class="pillar-name">Brand<br/>Compounding</div>
+        <div class="pillar-tag">Brand Growth Unit</div>
+      </div>
+      <div class="pillar-right">
+        <p class="pillar-desc">Virality is a moment. Dominance is a system. We build the <strong>long-term infrastructure</strong> — positioning, consistency, and scaling systems — that turns short-term attention into lasting market authority. Brands that compound, not brands that spike.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NUMBERS -->
+<div class="numbers-strip reveal">
+  <div class="number-cell">
+    <div class="num">12<span>M+</span></div>
+    <div class="desc">Impressions engineered</div>
+  </div>
+  <div class="number-cell">
+    <div class="num">50<span>+</span></div>
+    <div class="desc">Campaigns executed</div>
+  </div>
+  <div class="number-cell">
+    <div class="num">8<span>×</span></div>
+    <div class="desc">Average ROAS delivered</div>
+  </div>
+  <div class="number-cell">
+    <div class="num">4<span>yrs</span></div>
+    <div class="desc">Engineering attention</div>
+  </div>
+</div>
+
+<!-- STORY TIMELINE -->
+<div class="story-section">
+  <div class="story-grid">
+    <div class="story-label">
+      <div class="section-label">Our Journey</div>
+      <h2 class="section-title" style="font-size:clamp(40px,5vw,64px);">The Story<br/>So Far.</h2>
+    </div>
+    <div class="story-timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-year">2020</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Founded in Lagos</div>
+          <p class="timeline-desc">E-Vast launched as a social media agency in Lagos, Nigeria. We quickly realised the market didn't need more people posting — it needed <strong>people who could make brands impossible to ignore.</strong></p>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-year">2021</div>
+        <div class="timeline-content">
+          <div class="timeline-title">First Major Campaign</div>
+          <p class="timeline-desc">Executed our first full campaign launch for a Lagos-based fintech. <strong>3M impressions in 5 days</strong> using a narrative-first influencer strategy. The playbook that became E-Vast's signature was born here.</p>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-year">2022</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Building the X Network</div>
+          <p class="timeline-desc">We spent the year building what became our most powerful weapon: an exclusive, curated network of X (Twitter) influencers spanning tech, finance, culture, and entertainment. <strong>Not random influencers — strategic voices.</strong></p>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-year">2023</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Full-Service Expansion</div>
+          <p class="timeline-desc">Evolved from a PR-first agency into a full Creative PR & Marketing partner. Added Paid Media and Brand Growth units. <strong>Revenue outcomes became measurable,</strong> not just felt.</p>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-year">2025</div>
+        <div class="timeline-content">
+          <div class="timeline-title">E-Vast 2.0 — The Next Level</div>
+          <p class="timeline-desc">Repositioned as a <strong>Creative PR & Marketing Partner</strong>. No longer selling posts or designs. Engineering attention. Controlling narratives. Driving revenue. The next level — for our clients and ourselves.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<div class="team-section">
+  <div class="team-header reveal">
+    <div class="section-label">The Team</div>
+    <h2 class="section-title">The People<br/>Behind the <span style="color:var(--accent)">Machine.</span></h2>
+  </div>
+  <div class="team-grid">
+    <div class="team-card reveal">
+      <div class="team-avatar">CE</div>
+      <div class="team-name">Chidi Emeka</div>
+      <div class="team-role">Founder & Chief Strategist</div>
+      <p class="team-bio">The architect of E-Vast's approach to attention engineering. 8 years in brand communications across West Africa. Believes every brand has a campaign waiting inside it — his job is to find it and ignite it.</p>
+    </div>
+    <div class="team-card reveal reveal-delay-1">
+      <div class="team-avatar">FA</div>
+      <div class="team-name">Funmilayo Adebisi</div>
+      <div class="team-role">Head of PR & Influencer</div>
+      <p class="team-bio">Manages our exclusive X influencer network and all PR placements. Built relationships across 200+ strategic voices in tech, finance, and culture. If a narrative needs to move — she moves it.</p>
+    </div>
+    <div class="team-card reveal reveal-delay-2">
+      <div class="team-avatar">TO</div>
+      <div class="team-name">Tunde Okafor</div>
+      <div class="team-role">Head of Paid Media</div>
+      <p class="team-bio">Performance-first thinker who has managed over ₦500M in ad spend across Meta and Google. Obsessed with conversion architecture. Every campaign has a funnel, every funnel has a leak — Tunde finds it.</p>
+    </div>
+    <div class="team-card reveal">
+      <div class="team-avatar">AN</div>
+      <div class="team-name">Amara Nwosu</div>
+      <div class="team-role">Creative Director</div>
+      <p class="team-bio">The storyteller. Leads all campaign concepts, brand narratives, and creative direction. Trained in Lagos and London. Her campaigns don't just communicate — they make people feel something they didn't expect to feel.</p>
+    </div>
+    <div class="team-card reveal reveal-delay-1">
+      <div class="team-avatar">KO</div>
+      <div class="team-name">Kehinde Ojo</div>
+      <div class="team-role">Head of Brand Growth</div>
+      <p class="team-bio">Builds the systems that make campaigns compound. Manages long-term retainer clients and brand consistency. The quiet force behind brands that don't just spike — they climb.</p>
+    </div>
+    <div class="team-card reveal reveal-delay-2">
+      <div class="team-avatar">ZA</div>
+      <div class="team-name">Zainab Ahmed</div>
+      <div class="team-role">Client Strategy Lead</div>
+      <p class="team-bio">First point of contact for every new brief. Translates business objectives into campaign briefs the team can execute against. Ensures our clients always know what we're doing and why it's working.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CULTURE SHIFT -->
+<div class="culture-section">
+  <div class="culture-inner">
+    <div class="culture-left reveal">
+      <div class="section-label">Internal Culture</div>
+      <h2 class="culture-headline">We Changed<br/>How We<br/><span>Think.</span></h2>
+      <div class="culture-old-new">
+        <div class="culture-row">
+          <div class="culture-cell culture-col-header old">Old thinking</div>
+          <div class="culture-cell culture-col-header new">New thinking</div>
+        </div>
+        <div class="culture-row">
+          <div class="culture-cell">"What do we post?"</div>
+          <div class="culture-cell new-thinking">"What's the angle?"</div>
+        </div>
+        <div class="culture-row">
+          <div class="culture-cell">"We manage your socials"</div>
+          <div class="culture-cell new-thinking">"We control the narrative"</div>
+        </div>
+        <div class="culture-row">
+          <div class="culture-cell">"Here are your deliverables"</div>
+          <div class="culture-cell new-thinking">"Here are your outcomes"</div>
+        </div>
+        <div class="culture-row">
+          <div class="culture-cell">"Engagement is up 12%"</div>
+          <div class="culture-cell new-thinking">"Revenue is up 40%"</div>
+        </div>
+        <div class="culture-row">
+          <div class="culture-cell">"We post consistently"</div>
+          <div class="culture-cell new-thinking">"We engineer moments"</div>
+        </div>
+      </div>
+    </div>
+    <div class="culture-right reveal">
+      <div class="culture-value">
+        <div class="culture-value-num">01</div>
+        <div class="culture-value-title">Strategy Before Execution</div>
+        <p class="culture-value-desc">We never produce anything without a strategic reason for it to exist. Every piece of content, every placement, every ad is answering a question about attention, influence, or revenue.</p>
+      </div>
+      <div class="culture-value">
+        <div class="culture-value-num">02</div>
+        <div class="culture-value-title">Outcomes, Not Outputs</div>
+        <p class="culture-value-desc">We are accountable to results, not deliverables. Our clients don't pay for posts — they pay for what posts produce. This changes how we brief, build, and report on everything.</p>
+      </div>
+      <div class="culture-value">
+        <div class="culture-value-num">03</div>
+        <div class="culture-value-title">Selective Partnership</div>
+        <p class="culture-value-desc">We don't work with every brand that approaches us. We work with brands that are serious, funded, and ready to trust strategy over instinct. Our results depend on the quality of our clients as much as the quality of our work.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM CTA -->
+<div class="page-cta">
+  <h2 class="cta-headline reveal">
+    Think we're<br/>the right partner<br/>for your <span>brand?</span>
+  </h2>
+  <div class="cta-buttons reveal">
+    <a href="evast-contact.html" class="btn-primary">Apply to Work With Us ↗</a>
+    <a href="evast-services.html" class="btn-ghost">See Our Services</a>
+  </div>
+</div>
+
+<div class="footer-strip">
+  <span>© 2025 E-Vast Agency. All rights reserved.</span>
+  <div class="footer-strip-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="evast-homepage.html">← Home</a>
+  </div>
+</div>
+
+<script>
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let mX=0,mY=0,rX=0,rY=0;
+document.addEventListener('mousemove',e=>{mX=e.clientX;mY=e.clientY;cursor.style.left=mX+'px';cursor.style.top=mY+'px';});
+(function animRing(){rX+=(mX-rX)*.12;rY+=(mY-rY)*.12;ring.style.left=rX+'px';ring.style.top=rY+'px';requestAnimationFrame(animRing);})();
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

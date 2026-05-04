@@ -1,0 +1,668 @@
+html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Projects — E-Vast Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root {
+  --black: #0a0a0a;
+  --off-white: #f0ede6;
+  --dim: #7a7672;
+  --accent: #e8a020;
+  --border: rgba(240,237,230,0.1);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--off-white);font-family:var(--font-body);font-size:16px;line-height:1.6;cursor:none;overflow-x:hidden;}
+
+/* CURSOR */
+#cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(232,160,32,.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,opacity .2s;}
+body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:18px;height:18px;}
+body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:56px;height:56px;opacity:.4;}
+
+/* CURSOR LABEL - appears next to cursor on project hover */
+#cursor-label{position:fixed;pointer-events:none;z-index:9997;font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--black);background:var(--accent);padding:6px 12px;opacity:0;transform:translate(20px,-50%);transition:opacity .2s;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:72px;border-bottom:1px solid var(--border);background:rgba(10,10,10,.88);backdrop-filter:blur(12px);}
+.nav-logo{font-family:var(--font-display);font-size:28px;letter-spacing:.06em;color:var(--off-white);text-decoration:none;}
+.nav-logo span{color:var(--accent);}
+.nav-links{display:flex;gap:40px;list-style:none;}
+.nav-links a{font-family:var(--font-mono);font-size:11px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--off-white);}
+.nav-cta{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:var(--accent);color:var(--black);border:none;padding:10px 24px;cursor:none;transition:background .2s,transform .15s;}
+.nav-cta:hover{background:#f0b030;transform:translateY(-1px);}
+
+/* PAGE HEADER */
+.page-header{
+  padding:160px 48px 72px;
+  border-bottom:1px solid var(--border);
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:60px;
+  align-items:end;
+  position:relative;
+  overflow:hidden;
+}
+.page-header::before{
+  content:'WORK';
+  position:absolute;
+  font-family:var(--font-display);
+  font-size:360px;
+  color:rgba(240,237,230,.018);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  letter-spacing:.04em;
+}
+.page-header-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:14px;}
+.page-header-label::before{content:'';display:block;width:28px;height:1px;background:var(--accent);}
+.page-header-title{font-family:var(--font-display);font-size:clamp(68px,10vw,128px);line-height:.9;letter-spacing:.01em;color:var(--off-white);}
+.page-header-title span{color:var(--accent);}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-end;gap:24px;}
+.header-right p{font-size:14px;font-weight:300;color:var(--dim);text-align:right;max-width:260px;line-height:1.7;}
+.projects-count{font-family:var(--font-display);font-size:72px;color:var(--off-white);line-height:1;text-align:right;}
+.projects-count span{font-family:var(--font-mono);font-size:12px;font-weight:300;letter-spacing:.2em;color:var(--dim);display:block;margin-top:4px;text-transform:uppercase;}
+
+/* FILTER BAR */
+.filter-bar{
+  padding:0 48px;
+  height:60px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:0;
+  position:sticky;
+  top:72px;
+  z-index:50;
+  background:rgba(10,10,10,.95);
+  backdrop-filter:blur(12px);
+}
+.filter-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-right:32px;flex-shrink:0;}
+.filter-btn{
+  font-family:var(--font-mono);
+  font-size:10px;
+  font-weight:300;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--dim);
+  background:transparent;
+  border:none;
+  border-right:1px solid var(--border);
+  padding:0 24px;
+  height:100%;
+  cursor:none;
+  transition:color .2s,background .2s;
+}
+.filter-btn:first-of-type{border-left:1px solid var(--border);}
+.filter-btn:hover{color:var(--off-white);}
+.filter-btn.active{color:var(--black);background:var(--accent);}
+
+/* PROJECTS GRID */
+.projects-container{padding:0 48px 120px;}
+
+.projects-masonry{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2px;
+  background:var(--border);
+  margin-top:2px;
+}
+
+/* Featured row: 2 cols wide + 1 col */
+.projects-featured{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:2px;
+  background:var(--border);
+}
+
+.project-card{
+  background:#0d0d0d;
+  position:relative;
+  overflow:hidden;
+  cursor:none;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+}
+.project-card.tall{aspect-ratio:2/3;}
+.project-card.wide{aspect-ratio:16/9;}
+.project-card.square{aspect-ratio:1/1;}
+.project-card.standard{aspect-ratio:3/4;}
+
+.proj-bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  transform:scale(1.06);
+  transition:transform .65s ease,filter .4s ease;
+  filter:brightness(.25) saturate(.2);
+}
+.project-card:hover .proj-bg{
+  transform:scale(1);
+  filter:brightness(.5) saturate(.7);
+}
+
+/* Color gradients for project cards */
+.pb-1{background:linear-gradient(145deg,#1c0800 0%,#3d1500 60%,#5a2a00 100%);}
+.pb-2{background:linear-gradient(145deg,#00101c 0%,#002040 60%,#003060 100%);}
+.pb-3{background:linear-gradient(145deg,#0f001a 0%,#220035 60%,#380055 100%);}
+.pb-4{background:linear-gradient(145deg,#001810 0%,#003020 60%,#004828 100%);}
+.pb-5{background:linear-gradient(145deg,#1a0008 0%,#380014 60%,#550020 100%);}
+.pb-6{background:linear-gradient(145deg,#0e0e00 0%,#242400 60%,#383800 100%);}
+.pb-7{background:linear-gradient(145deg,#001020 0%,#002244 60%,#003366 100%);}
+.pb-8{background:linear-gradient(145deg,#180018 0%,#300030 60%,#480048 100%);}
+
+.highlight-bar{
+  position:absolute;top:0;left:0;
+  width:3px;height:0;
+  background:var(--accent);
+  transition:height .45s ease;
+}
+.project-card:hover .highlight-bar{height:100%;}
+
+.card-inner{
+  position:relative;z-index:2;
+  padding:36px 32px;
+  background:linear-gradient(to top,rgba(10,10,10,.92) 0%,transparent 100%);
+}
+.card-category{
+  font-family:var(--font-mono);font-size:10px;font-weight:300;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:10px;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .3s .05s,transform .3s .05s;
+}
+.project-card:hover .card-category{opacity:1;transform:translateY(0);}
+.card-title{
+  font-family:var(--font-display);
+  font-size:30px;letter-spacing:.03em;
+  color:var(--off-white);line-height:1;
+  margin-bottom:10px;
+  transform:translateY(14px);
+  transition:transform .35s ease;
+}
+.project-card:hover .card-title{transform:translateY(0);}
+.card-result{
+  font-size:13px;font-weight:300;
+  color:rgba(240,237,230,.65);
+  line-height:1.5;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .3s .08s,transform .3s .08s;
+  margin-bottom:16px;
+}
+.project-card:hover .card-result{opacity:1;transform:translateY(0);}
+.card-metrics{
+  display:flex;gap:24px;
+  opacity:0;transform:translateY(6px);
+  transition:opacity .3s .14s,transform .3s .14s;
+}
+.project-card:hover .card-metrics{opacity:1;transform:translateY(0);}
+.metric{display:flex;flex-direction:column;gap:2px;}
+.metric-num{font-family:var(--font-display);font-size:26px;color:var(--accent);line-height:1;}
+.metric-label{font-family:var(--font-mono);font-size:9px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:rgba(240,237,230,.5);}
+
+/* CTA card in grid */
+.project-cta-card{
+  background:var(--accent);
+  display:flex;flex-direction:column;
+  justify-content:space-between;
+  padding:40px 36px;
+  cursor:none;
+  text-decoration:none;
+  transition:background .2s;
+  aspect-ratio:3/4;
+}
+.project-cta-card:hover{background:#f0b030;}
+.cta-card-top{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:rgba(10,10,10,.6);}
+.cta-card-bottom{}
+.cta-card-title{font-family:var(--font-display);font-size:40px;letter-spacing:.02em;color:var(--black);line-height:.95;margin-bottom:20px;}
+.cta-card-arrow{font-size:32px;color:var(--black);display:block;transition:transform .3s;}
+.project-cta-card:hover .cta-card-arrow{transform:translate(6px,-6px);}
+
+/* STATS BAR */
+.stats-bar{
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  background:var(--border);
+  gap:1px;
+  margin:0 48px;
+}
+.stat-cell{
+  background:var(--black);
+  padding:44px 48px;
+  position:relative;
+}
+.stat-cell::after{content:'';position:absolute;bottom:0;left:48px;width:0;height:2px;background:var(--accent);transition:width .4s ease;}
+.stat-cell:hover::after{width:calc(100% - 96px);}
+.stat-num{font-family:var(--font-display);font-size:68px;color:var(--off-white);line-height:1;margin-bottom:8px;}
+.stat-num span{color:var(--accent);}
+.stat-desc{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);}
+
+/* TESTIMONIAL */
+.testimonial-section{
+  padding:100px 48px;
+  border-bottom:1px solid var(--border);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:100px;
+  align-items:center;
+}
+.testimonial-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:32px;display:flex;align-items:center;gap:14px;}
+.testimonial-label::before{content:'';display:block;width:28px;height:1px;background:var(--accent);}
+.testimonial-quote{font-family:var(--font-display);font-size:clamp(32px,4vw,52px);line-height:1.1;color:var(--off-white);letter-spacing:.02em;margin-bottom:40px;}
+.testimonial-author{display:flex;align-items:center;gap:16px;}
+.author-avatar{width:48px;height:48px;border-radius:50%;background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.3);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:18px;color:var(--accent);}
+.author-info .name{font-size:14px;font-weight:400;color:var(--off-white);}
+.author-info .role{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);}
+.testimonial-right{display:flex;flex-direction:column;gap:2px;background:var(--border);}
+.mini-stat{background:#0e0e0e;padding:28px 32px;transition:background .2s;}
+.mini-stat:hover{background:#111;}
+.mini-stat-num{font-family:var(--font-display);font-size:48px;color:var(--accent);line-height:1;margin-bottom:6px;}
+.mini-stat-label{font-size:13px;font-weight:300;color:var(--dim);}
+
+/* BOTTOM CTA */
+.page-footer-cta{border-top:1px solid var(--border);padding:100px 48px;}
+.footer-cta-headline{font-family:var(--font-display);font-size:clamp(52px,8vw,108px);line-height:.92;letter-spacing:.01em;color:var(--off-white);margin-bottom:52px;max-width:820px;}
+.footer-cta-headline span{color:var(--accent);}
+
+.qual-form{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border);max-width:820px;}
+.form-field{background:#0e0e0e;padding:28px 32px;display:flex;flex-direction:column;gap:10px;}
+.form-field.full{grid-column:1/-1;}
+.form-field label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);}
+.form-field input,.form-field select,.form-field textarea{background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--off-white);font-family:var(--font-body);font-size:15px;font-weight:300;padding:8px 0;outline:none;transition:border-color .2s;cursor:none;width:100%;}
+.form-field select option{background:#1a1a1a;}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--accent);}
+.form-field input::placeholder,.form-field textarea::placeholder{color:rgba(122,118,114,.5);}
+.form-field textarea{resize:none;min-height:80px;}
+.form-submit{grid-column:1/-1;background:#0e0e0e;padding:32px;display:flex;align-items:center;justify-content:space-between;}
+.form-note{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--dim);}
+.btn-submit{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;background:var(--accent);color:var(--black);border:none;padding:16px 48px;cursor:none;font-weight:400;transition:background .2s,transform .15s;}
+.btn-submit:hover{background:#f0b030;transform:translateY(-2px);}
+
+/* FOOTER STRIP */
+.footer-strip{border-top:1px solid var(--border);padding:28px 48px;display:flex;justify-content:space-between;align-items:center;}
+.footer-strip span,.footer-strip a{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--dim);text-decoration:none;}
+.footer-strip a:hover{color:var(--off-white);}
+.footer-strip-links{display:flex;gap:28px;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="cursor-label">View Project</div>
+
+<nav>
+  <a class="nav-logo" href="evast-homepage.html"><span>E</span>-VAST</a>
+  <ul class="nav-links">
+    <li><a href="evast-homepage.html">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="evast-services.html">Services</a></li>
+    <li><a href="#" class="active">Projects</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('projects-form').scrollIntoView({behavior:'smooth'})">Get Started</button>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div>
+    <div class="page-header-label">Our Portfolio</div>
+    <h1 class="page-header-title">
+      Real Work.<br/>
+      Real<br/>
+      <span>Results.</span>
+    </h1>
+  </div>
+  <div class="header-right">
+    <p>Every campaign engineered for attention, influence, and measurable revenue outcomes.</p>
+    <div class="projects-count">
+      08
+      <span>Campaigns Shown</span>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">Filter by:</span>
+  <button class="filter-btn active" data-filter="all">All Work</button>
+  <button class="filter-btn" data-filter="pr">PR</button>
+  <button class="filter-btn" data-filter="paid">Paid Media</button>
+  <button class="filter-btn" data-filter="creative">Creative</button>
+  <button class="filter-btn" data-filter="brand">Brand Growth</button>
+  <button class="filter-btn" data-filter="event">Events</button>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar reveal">
+  <div class="stat-cell">
+    <div class="stat-num">12<span>M+</span></div>
+    <div class="stat-desc">Impressions generated</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-num">8<span>×</span></div>
+    <div class="stat-desc">Average ROAS delivered</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-num">62<span>%</span></div>
+    <div class="stat-desc">Avg CPL reduction</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-num">48<span>hr</span></div>
+    <div class="stat-desc">Avg time to trend</div>
+  </div>
+</div>
+
+<!-- PROJECTS GRID -->
+<div class="projects-container">
+  <!-- Featured row -->
+  <div class="projects-featured">
+    <div class="project-card wide" data-category="pr fintech">
+      <div class="highlight-bar"></div>
+      <div class="proj-bg pb-1"></div>
+      <div class="card-inner">
+        <div class="card-category">Fintech · PR Campaign · X Influencer</div>
+        <div class="card-title">LaunchBrand X — Zero to Viral</div>
+        <div class="card-result">Product launch campaign that reached 12M impressions in 72 hours through our exclusive X influencer network. Brand became the most-discussed fintech story of the week.</div>
+        <div class="card-metrics">
+          <div class="metric"><div class="metric-num">12M</div><div class="metric-label">Impressions</div></div>
+          <div class="metric"><div class="metric-num">72hr</div><div class="metric-label">Time to trend</div></div>
+          <div class="metric"><div class="metric-num">340%</div><div class="metric-label">App downloads ↑</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card square" data-category="event creative">
+      <div class="highlight-bar"></div>
+      <div class="proj-bg pb-2"></div>
+      <div class="card-inner">
+        <div class="card-category">Event · Creative Campaign</div>
+        <div class="card-title">Nexus Lagos — Sold Out</div>
+        <div class="card-result">3,000-capacity event sold out in 11 days via influencer seeding + targeted paid media.</div>
+        <div class="card-metrics">
+          <div class="metric"><div class="metric-num">8×</div><div class="metric-label">ROAS</div></div>
+          <div class="metric"><div class="metric-num">11d</div><div class="metric-label">Sellout time</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 col row -->
+  <div class="projects-masonry">
+    <div class="project-card standard" data-category="brand fmcg">
+      <div class="highlight-bar"></div>
+      <div class="proj-bg pb-3"></div>
+      <div class="card-inner">
+        <div class="card-category">FMCG · Brand Growth</div>
+        <div class="card-title">NovaFMCG Product Launch</div>
+        <div class="card-result">New product trended nationally. 40% increase in retail velocity within 30 days of campaign launch.</div>
+        <div class="card-metrics">
+          <div class="metric"><div class="metric-num">40%</div><div class="metric-label">Retail velocity ↑</div></div>
+          <div class="metric"><div class="metric-num">#1</div><div class="metric-label">Category trend</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card standard" data-category="paid tech">
+      <div class="highlight-bar"></div>
+      <div class="proj-bg pb-4"></div>
+      <div class="card-inner">
+        <div class="card-category">Tech · Paid Media</div>
+        <div class="card-title">Skyline SaaS — Pipeline Growth</div>
+        <div class="card-result">Full-funnel paid media overhaul that reduced CPL by 62% and generated $1.2M in pipeline in Q1.</div>
+        <div class="card-metrics">
+          <div class="metric"><div class="metric-num">62%</div><div class="metric-label">CPL reduction</div></div>
+          <div class="metric"><div class="metric-num">$1.2M</div><div class="metric-label">Pipeline Q1</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card standard" data-category="pr fintech creative">
+      <div class="highlight-bar"></div>
+      <div class="proj-bg pb-5"></div>
+      <div class="card-inner">
+        <div class="card-category">Fintech · Campaign Launch</div>
+        <div class="card-title">PulseWallet — App Launch</div>
+        <div class="card-result">200K app downloads in launch week. Zero-to-viral in 48hrs via narrative-first influencer strategy.</div>
+        <div class="card-metrics">
+          <div class="metric"><div class="metric-num">200K</div><div class="metric-label">Downloads wk 1</div></div>
+          <div class="metric"><div class="metric-num">48hr</div><div class="metric-label">To viral</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom mixed row -->
+  <div class="projects-featured" style="grid-template-columns:1fr 2fr;">
+    <a href="#projects-form" class="project-cta-card">
+      <div class="cta-card-top">Your brand. Next.</div>
+      <div class="cta-card-bottom">
+        <div class="cta-card-title">Want Results Like These?</div>
+        <span class="cta-card-arrow">↗</span>
+      </div>
+    </a>
+    <div class="project-card" style="aspect-ratio:unset;min-height:320px;" data-category="pr brand event">
+      <div class="highlight-bar"></div>
+      <div class="proj-bg pb-6"></div>
+      <div class="card-inner">
+        <div class="card-category">Brand Growth · Retainer · Multi-channel</div>
+        <div class="card-title">VantageBank — 12-Month Domination</div>
+        <div class="card-result">12-month retainer that repositioned a challenger bank from unknown to industry authority. Consistent share-of-voice ownership across X, Instagram, and earned media.</div>
+        <div class="card-metrics">
+          <div class="metric"><div class="metric-num">12mo</div><div class="metric-label">Retainer</div></div>
+          <div class="metric"><div class="metric-num">4.2×</div><div class="metric-label">Brand awareness ↑</div></div>
+          <div class="metric"><div class="metric-num">#1</div><div class="metric-label">Share of voice</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Final row: 3 standard -->
+  <div class="projects-masonry">
+    <div class="project-card standard" data-category="event creative paid">
+      <div class="highlight-bar"></div>
+      <div class="proj-bg pb-7"></div>
+      <div class="card-inner">
+        <div class="card-category">Event · Creative · Paid</div>
+        <div class="card-title">Summit Africa 2024</div>
+        <div class="card-result">Pan-African conference campaign. 5M reach in 14 days, 92% ticket sell-through via influencer + paid strategy.</div>
+        <div class="card-metrics">
+          <div class="metric"><div class="metric-num">5M</div><div class="metric-label">Reach</div></div>
+          <div class="metric"><div class="metric-num">92%</div><div class="metric-label">Sell-through</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card standard" data-category="brand creative">
+      <div class="highlight-bar"></div>
+      <div class="proj-bg pb-8"></div>
+      <div class="card-inner">
+        <div class="card-category">Brand · Creative Relaunch</div>
+        <div class="card-title">Kove Fashion — Reposition</div>
+        <div class="card-result">Rebranded from local label to national fashion authority. Campaign concept drove 180% Instagram growth in 60 days.</div>
+        <div class="card-metrics">
+          <div class="metric"><div class="metric-num">180%</div><div class="metric-label">IG growth</div></div>
+          <div class="metric"><div class="metric-num">60d</div><div class="metric-label">Campaign</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="project-card standard" data-category="pr paid tech">
+      <div class="highlight-bar"></div>
+      <div class="proj-bg pb-1" style="filter:brightness(.22) saturate(.2) hue-rotate(180deg);"></div>
+      <div class="card-inner">
+        <div class="card-category">Tech Startup · PR + Paid</div>
+        <div class="card-title">GridPower — Series A Buzz</div>
+        <div class="card-result">Pre-Series A awareness campaign. Secured 14 media placements, 3M impressions, 60% increase in investor inquiry rate.</div>
+        <div class="card-metrics">
+          <div class="metric"><div class="metric-num">14</div><div class="metric-label">Media hits</div></div>
+          <div class="metric"><div class="metric-num">60%</div><div class="metric-label">Investor inquiries ↑</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIAL -->
+<div class="testimonial-section reveal">
+  <div>
+    <div class="testimonial-label">Client Voice</div>
+    <div class="testimonial-quote">"They didn't just run our campaign. They made our brand impossible to ignore."</div>
+    <div class="testimonial-author">
+      <div class="author-avatar">KA</div>
+      <div class="author-info">
+        <div class="name">Kunle Adeyemi</div>
+        <div class="role">CEO, PulseWallet</div>
+      </div>
+    </div>
+  </div>
+  <div class="testimonial-right">
+    <div class="mini-stat">
+      <div class="mini-stat-num">200K</div>
+      <div class="mini-stat-label">App downloads in launch week</div>
+    </div>
+    <div class="mini-stat">
+      <div class="mini-stat-num">48hr</div>
+      <div class="mini-stat-label">Time to trending on X</div>
+    </div>
+    <div class="mini-stat">
+      <div class="mini-stat-num">₦0</div>
+      <div class="mini-stat-label">PR budget — pure earned media</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA FORM -->
+<div class="page-footer-cta" id="projects-form">
+  <h2 class="footer-cta-headline reveal">
+    Your brand<br/>belongs on<br/><span>this page.</span>
+  </h2>
+  <form class="qual-form reveal" onsubmit="handleSubmit(event)">
+    <div class="form-field">
+      <label>Your Name</label>
+      <input type="text" placeholder="John Adeyemi" required/>
+    </div>
+    <div class="form-field">
+      <label>Company / Brand</label>
+      <input type="text" placeholder="Your brand name" required/>
+    </div>
+    <div class="form-field">
+      <label>Email Address</label>
+      <input type="email" placeholder="you@company.com" required/>
+    </div>
+    <div class="form-field">
+      <label>Monthly Marketing Budget</label>
+      <select>
+        <option value="">Select range...</option>
+        <option>₦500K – ₦1M</option>
+        <option>₦1M – ₦5M</option>
+        <option>₦5M – ₦15M</option>
+        <option>₦15M+</option>
+      </select>
+    </div>
+    <div class="form-field full">
+      <label>What result do you want?</label>
+      <textarea placeholder="Describe the outcome you need. We'll engineer the campaign."></textarea>
+    </div>
+    <div class="form-submit">
+      <span class="form-note">We review every submission personally.<br/>Response within 24 hours.</span>
+      <button type="submit" class="btn-submit">Submit — Let's Make History</button>
+    </div>
+  </form>
+</div>
+
+<div class="footer-strip">
+  <span>© 2025 E-Vast Agency. All rights reserved.</span>
+  <div class="footer-strip-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="evast-homepage.html">Home</a>
+  </div>
+</div>
+
+<script>
+// Cursor
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+const cursorLabel=document.getElementById('cursor-label');
+let mX=0,mY=0,rX=0,rY=0;
+document.addEventListener('mousemove',e=>{
+  mX=e.clientX;mY=e.clientY;
+  cursor.style.left=mX+'px';cursor.style.top=mY+'px';
+  cursorLabel.style.left=mX+'px';cursorLabel.style.top=mY+'px';
+});
+(function animRing(){rX+=(mX-rX)*.12;rY+=(mY-rY)*.12;ring.style.left=rX+'px';ring.style.top=rY+'px';requestAnimationFrame(animRing);})();
+
+// Show label on project hover
+document.querySelectorAll('.project-card').forEach(card=>{
+  card.addEventListener('mouseenter',()=>{ cursorLabel.style.opacity='1'; });
+  card.addEventListener('mouseleave',()=>{ cursorLabel.style.opacity='0'; });
+});
+
+// Filter
+const filterBtns=document.querySelectorAll('.filter-btn');
+filterBtns.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    filterBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter=btn.dataset.filter;
+    document.querySelectorAll('.project-card[data-category]').forEach(card=>{
+      if(filter==='all'){
+        card.style.opacity='1';card.style.pointerEvents='auto';
+      } else {
+        const cats=card.dataset.category||'';
+        if(cats.includes(filter)){
+          card.style.opacity='1';card.style.pointerEvents='auto';
+        } else {
+          card.style.opacity='0.25';card.style.pointerEvents='none';
+        }
+      }
+    });
+  });
+});
+
+// Transition for filter
+document.querySelectorAll('.project-card[data-category]').forEach(c=>{
+  c.style.transition='opacity .35s ease';
+});
+
+// Reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Form
+function handleSubmit(e){
+  e.preventDefault();
+  const btn=e.target.querySelector('.btn-submit');
+  btn.textContent="✓ Submitted — We'll be in touch";
+  btn.style.background='#2a6b3a';btn.style.color='#b8f0c8';btn.disabled=true;
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
+</script>
+</body>
+</html>

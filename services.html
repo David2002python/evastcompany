@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Services — E-Vast Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #0a0a0a;
+  --off-white: #f0ede6;
+  --dim: #7a7672;
+  --accent: #e8a020;
+  --border: rgba(240,237,230,0.1);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--off-white);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  cursor: none;
+  overflow-x: hidden;
+}
+
+/* CURSOR */
+#cursor { position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s; }
+#cursor-ring { position:fixed;width:36px;height:36px;border:1px solid rgba(232,160,32,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,opacity .2s; }
+body:has(a:hover) #cursor, body:has(button:hover) #cursor { width:18px;height:18px; }
+body:has(a:hover) #cursor-ring, body:has(button:hover) #cursor-ring { width:56px;height:56px;opacity:.4; }
+
+/* NAV */
+nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:72px;border-bottom:1px solid var(--border);background:rgba(10,10,10,0.88);backdrop-filter:blur(12px); }
+.nav-logo { font-family:var(--font-display);font-size:28px;letter-spacing:.06em;color:var(--off-white);text-decoration:none; }
+.nav-logo span { color:var(--accent); }
+.nav-links { display:flex;gap:40px;list-style:none; }
+.nav-links a { font-family:var(--font-mono);font-size:11px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .2s; }
+.nav-links a:hover, .nav-links a.active { color:var(--off-white); }
+.nav-cta { font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:var(--accent);color:var(--black);border:none;padding:10px 24px;cursor:none;transition:background .2s,transform .15s; }
+.nav-cta:hover { background:#f0b030;transform:translateY(-1px); }
+
+/* PAGE HEADER */
+.page-header {
+  padding: 160px 48px 80px;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: 'SERVICES';
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: 280px;
+  color: rgba(240,237,230,0.02);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  white-space: nowrap;
+  pointer-events: none;
+  letter-spacing: .04em;
+}
+.page-header-label { font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:14px; }
+.page-header-label::before { content:'';display:block;width:28px;height:1px;background:var(--accent); }
+.page-header-title { font-family:var(--font-display);font-size:clamp(64px,9vw,116px);line-height:.92;letter-spacing:.01em;color:var(--off-white); }
+.page-header-right { display:flex;flex-direction:column;justify-content:flex-end;gap:32px; }
+.page-header-desc { font-size:17px;font-weight:300;color:var(--dim);line-height:1.75;max-width:420px; }
+.page-header-desc strong { color:var(--off-white);font-weight:400; }
+.header-stat-row { display:flex;gap:48px; }
+.header-stat .num { font-family:var(--font-display);font-size:52px;color:var(--accent);line-height:1; }
+.header-stat .label { font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-top:4px; }
+
+/* SERVICES ACCORDION / EXPANDED LAYOUT */
+.services-section { padding: 0 48px 120px; }
+
+.service-block {
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+.service-block:first-child { border-top: 1px solid var(--border); }
+
+.service-header {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: 48px;
+  padding: 48px 0;
+  cursor: none;
+  transition: background .2s;
+  position: relative;
+}
+.service-header:hover .service-header-title { color: var(--accent); }
+
+.service-num-large {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--dim);
+  letter-spacing: .2em;
+}
+.service-header-title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5.5vw, 72px);
+  letter-spacing: .02em;
+  color: var(--off-white);
+  transition: color .3s;
+  line-height: 1;
+}
+.service-toggle {
+  width: 48px; height: 48px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  color: var(--dim);
+  transition: border-color .2s, color .2s, transform .35s, background .2s;
+  flex-shrink: 0;
+}
+.service-block.open .service-toggle {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: rotate(45deg);
+  background: rgba(232,160,32,0.08);
+}
+
+.service-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  padding: 0 0 64px 128px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .55s ease, opacity .4s ease, padding .4s ease;
+}
+.service-block.open .service-body {
+  max-height: 600px;
+  opacity: 1;
+}
+
+.service-body-left {}
+.service-body-desc {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--dim);
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+.service-body-desc strong { color: var(--off-white); font-weight: 400; }
+.service-what-we-sell {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 10px;
+}
+.service-sell-statement {
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--off-white);
+  font-style: italic;
+  border-left: 2px solid var(--accent);
+  padding-left: 20px;
+  line-height: 1.6;
+  margin-bottom: 36px;
+}
+.service-cta-inline {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  background: var(--accent);
+  color: var(--black);
+  border: none;
+  padding: 14px 32px;
+  cursor: none;
+  font-weight: 400;
+  transition: background .2s, transform .15s;
+  text-decoration: none;
+  display: inline-block;
+}
+.service-cta-inline:hover { background:#f0b030; transform:translateY(-2px); }
+
+.service-body-right {}
+.service-includes-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.service-includes-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+.service-includes-list li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--off-white);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.service-includes-list li::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.service-outcome-tag {
+  margin-top: 24px;
+  background: rgba(232,160,32,0.08);
+  border: 1px solid rgba(232,160,32,0.2);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.service-outcome-tag .ot-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.service-outcome-tag .ot-text {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--off-white);
+}
+
+/* OFFER PACKAGES */
+.packages-section {
+  padding: 100px 48px;
+  border-top: 1px solid var(--border);
+  background: #0d0d0d;
+}
+.packages-header { margin-bottom: 64px; }
+.section-label { font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:14px; }
+.section-label::before { content:'';display:block;width:28px;height:1px;background:var(--accent); }
+.section-title { font-family:var(--font-display);font-size:clamp(48px,7vw,88px);line-height:.94;letter-spacing:.01em;color:var(--off-white); }
+
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.package-card {
+  background: var(--black);
+  padding: 52px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  transition: background .25s;
+}
+.package-card:hover { background: #111; }
+.package-card.featured {
+  background: var(--accent);
+}
+.package-card.featured:hover { background: #f0b030; }
+.pkg-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 20px;
+}
+.package-card.featured .pkg-tag { color: rgba(10,10,10,0.6); }
+.pkg-name {
+  font-family: var(--font-display);
+  font-size: 38px;
+  letter-spacing: .02em;
+  color: var(--off-white);
+  line-height: 1;
+  margin-bottom: 24px;
+}
+.package-card.featured .pkg-name { color: var(--black); }
+.pkg-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--dim);
+  line-height: 1.7;
+  margin-bottom: 36px;
+  flex: 1;
+}
+.package-card.featured .pkg-desc { color: rgba(10,10,10,0.7); }
+.pkg-includes { list-style: none; display: flex; flex-direction: column; gap: 0; margin-bottom: 40px; }
+.pkg-includes li {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(240,237,230,0.7);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.package-card.featured .pkg-includes li { color: rgba(10,10,10,0.8); border-bottom-color: rgba(10,10,10,0.15); }
+.pkg-includes li::before { content:'';width:4px;height:4px;background:var(--accent);border-radius:50%;flex-shrink:0; }
+.package-card.featured .pkg-includes li::before { background: var(--black); }
+.pkg-cta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--off-white);
+  padding: 14px 28px;
+  cursor: none;
+  transition: background .2s, border-color .2s, color .2s;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+.pkg-cta:hover { background: var(--off-white); color: var(--black); border-color: var(--off-white); }
+.package-card.featured .pkg-cta { background: var(--black); color: var(--off-white); border-color: var(--black); }
+.package-card.featured .pkg-cta:hover { background: #1a1a1a; }
+
+/* BOTTOM CTA */
+.page-footer-cta {
+  border-top: 1px solid var(--border);
+  padding: 100px 48px;
+}
+.footer-cta-headline { font-family:var(--font-display);font-size:clamp(52px,8vw,108px);line-height:.92;letter-spacing:.01em;color:var(--off-white);margin-bottom:52px;max-width:820px; }
+.footer-cta-headline span { color:var(--accent); }
+
+.qual-form { display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border);max-width:820px; }
+.form-field { background:#0e0e0e;padding:28px 32px;display:flex;flex-direction:column;gap:10px; }
+.form-field.full { grid-column:1/-1; }
+.form-field label { font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--dim); }
+.form-field input, .form-field select, .form-field textarea { background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--off-white);font-family:var(--font-body);font-size:15px;font-weight:300;padding:8px 0;outline:none;transition:border-color .2s;cursor:none;width:100%; }
+.form-field select option { background:#1a1a1a; }
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color:var(--accent); }
+.form-field input::placeholder, .form-field textarea::placeholder { color:rgba(122,118,114,.5); }
+.form-field textarea { resize:none;min-height:80px; }
+.form-submit { grid-column:1/-1;background:#0e0e0e;padding:32px;display:flex;align-items:center;justify-content:space-between; }
+.form-note { font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--dim); }
+.btn-submit { font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;background:var(--accent);color:var(--black);border:none;padding:16px 48px;cursor:none;font-weight:400;transition:background .2s,transform .15s; }
+.btn-submit:hover { background:#f0b030;transform:translateY(-2px); }
+
+/* FOOTER */
+footer-bottom-strip { display:block;border-top:1px solid var(--border);padding:28px 48px;display:flex;justify-content:space-between;align-items:center; }
+.footer-strip { border-top:1px solid var(--border);padding:28px 48px;display:flex;justify-content:space-between;align-items:center; }
+.footer-strip span, .footer-strip a { font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--dim);text-decoration:none; }
+.footer-strip a:hover { color:var(--off-white); }
+.footer-strip-links { display:flex;gap:28px; }
+
+/* REVEAL */
+.reveal { opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease; }
+.reveal.visible { opacity:1;transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a class="nav-logo" href="evast-homepage.html"><span>E</span>-VAST</a>
+  <ul class="nav-links">
+    <li><a href="evast-homepage.html">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#" class="active">Services</a></li>
+    <li><a href="evast-projects.html">Projects</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('services-form').scrollIntoView({behavior:'smooth'})">Get Started</button>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div>
+    <div class="page-header-label">What We Do</div>
+    <h1 class="page-header-title">We Don't<br/>Execute.<br/><span style="color:var(--accent)">We Elevate.</span></h1>
+  </div>
+  <div class="page-header-right">
+    <p class="page-header-desc">
+      Most agencies either do PR poorly or run ads without narrative.<br/><br/>
+      <strong>We combine PR + Influencer Control + Paid Media + Creative Strategy into one unified system.</strong> Every service we offer ties back to three outcomes: Attention. Influence. Revenue.
+    </p>
+    <div class="header-stat-row">
+      <div class="header-stat">
+        <div class="num">4</div>
+        <div class="label">Core Services</div>
+      </div>
+      <div class="header-stat">
+        <div class="num">1</div>
+        <div class="label">Unified System</div>
+      </div>
+      <div class="header-stat">
+        <div class="num">3</div>
+        <div class="label">Outcomes</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES ACCORDION -->
+<div class="services-section">
+
+  <!-- SERVICE 01: HIGH LEVEL PR -->
+  <div class="service-block open" id="s1">
+    <div class="service-header" onclick="toggleService('s1')">
+      <div class="service-num-large">01</div>
+      <div class="service-header-title">High-Level PR</div>
+      <div class="service-toggle">+</div>
+    </div>
+    <div class="service-body">
+      <div class="service-body-left">
+        <p class="service-body-desc">
+          Attention is currency. Most brands spend money hoping to be noticed — we <strong>engineer the moment</strong> when they become unavoidable. Through narrative control, cultural moment hijacking, and our exclusive X (Twitter) influencer network, we put your brand into conversations that matter.
+        </p>
+        <div class="service-what-we-sell">What we're really selling</div>
+        <div class="service-sell-statement">"We can make people talk about your brand at scale."</div>
+        <a href="#services-form" class="service-cta-inline">Start a PR Campaign ↗</a>
+      </div>
+      <div class="service-body-right">
+        <div class="service-includes-title">What's included</div>
+        <ul class="service-includes-list">
+          <li>Narrative strategy & messaging framework</li>
+          <li>Exclusive X influencer network activation</li>
+          <li>Cultural moment identification & hijacking</li>
+          <li>Media pitching & press placement</li>
+          <li>Influencer-led amplification campaigns</li>
+          <li>Real-time reputation monitoring</li>
+        </ul>
+        <div class="service-outcome-tag">
+          <span class="ot-label">Outcome</span>
+          <span class="ot-text">Attention you cannot buy — earned at scale</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICE 02: PAID MEDIA -->
+  <div class="service-block" id="s2">
+    <div class="service-header" onclick="toggleService('s2')">
+      <div class="service-num-large">02</div>
+      <div class="service-header-title">Paid Media & Performance</div>
+      <div class="service-toggle">+</div>
+    </div>
+    <div class="service-body">
+      <div class="service-body-left">
+        <p class="service-body-desc">
+          Attention without conversion is noise. Our Revenue Engine Unit takes the visibility created by PR and <strong>converts it into measurable outcomes</strong>. We build and manage full-funnel paid media strategies across every relevant channel, scaling what works and killing what doesn't.
+        </p>
+        <div class="service-what-we-sell">What we're really selling</div>
+        <div class="service-sell-statement">"We turn attention into measurable revenue outcomes."</div>
+        <a href="#services-form" class="service-cta-inline">Launch a Paid Campaign ↗</a>
+      </div>
+      <div class="service-body-right">
+        <div class="service-includes-title">What's included</div>
+        <ul class="service-includes-list">
+          <li>Full-funnel paid media strategy</li>
+          <li>Meta, Google & X ad management</li>
+          <li>Audience segmentation & targeting</li>
+          <li>Creative testing & iteration</li>
+          <li>Conversion rate optimisation</li>
+          <li>Weekly data reporting & insights</li>
+        </ul>
+        <div class="service-outcome-tag">
+          <span class="ot-label">Outcome</span>
+          <span class="ot-text">Scalable revenue growth with measurable ROAS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICE 03: CREATIVE CAMPAIGNS -->
+  <div class="service-block" id="s3">
+    <div class="service-header" onclick="toggleService('s3')">
+      <div class="service-num-large">03</div>
+      <div class="service-header-title">Creative Campaigns</div>
+      <div class="service-toggle">+</div>
+    </div>
+    <div class="service-body">
+      <div class="service-body-left">
+        <p class="service-body-desc">
+          Content without strategy is noise. Our Impact Unit doesn't produce content — we <strong>build campaigns that cut through</strong>. Big ideas, powerful storytelling, and launch concepts that create cultural moments people reference long after the campaign ends.
+        </p>
+        <div class="service-what-we-sell">What we're really selling</div>
+        <div class="service-sell-statement">"We create moments people remember."</div>
+        <a href="#services-form" class="service-cta-inline">Brief a Campaign ↗</a>
+      </div>
+      <div class="service-body-right">
+        <div class="service-includes-title">What's included</div>
+        <ul class="service-includes-list">
+          <li>Campaign concept & big idea development</li>
+          <li>Brand storytelling framework</li>
+          <li>Launch strategy & rollout planning</li>
+          <li>Visual identity direction & art direction</li>
+          <li>Multi-channel content production</li>
+          <li>Campaign performance review</li>
+        </ul>
+        <div class="service-outcome-tag">
+          <span class="ot-label">Outcome</span>
+          <span class="ot-text">Campaigns that define brands, not just promote them</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICE 04: BRAND GROWTH -->
+  <div class="service-block" id="s4">
+    <div class="service-header" onclick="toggleService('s4')">
+      <div class="service-num-large">04</div>
+      <div class="service-header-title">Brand Growth Systems</div>
+      <div class="service-toggle">+</div>
+    </div>
+    <div class="service-body">
+      <div class="service-body-left">
+        <p class="service-body-desc">
+          Virality is a moment. Dominance is a system. Our Retention Unit builds the long-term infrastructure that keeps your brand relevant, consistent, and scaling — turning short-term attention into <strong>lasting market positioning</strong>.
+        </p>
+        <div class="service-what-we-sell">What we're really selling</div>
+        <div class="service-sell-statement">"We build brands that last and scale."</div>
+        <a href="#services-form" class="service-cta-inline">Build Your Growth System ↗</a>
+      </div>
+      <div class="service-body-right">
+        <div class="service-includes-title">What's included</div>
+        <ul class="service-includes-list">
+          <li>Social media management & direction</li>
+          <li>Long-term brand positioning strategy</li>
+          <li>Content calendar & editorial planning</li>
+          <li>Community management & engagement</li>
+          <li>Monthly brand health reporting</li>
+          <li>Quarterly strategy reviews</li>
+        </ul>
+        <div class="service-outcome-tag">
+          <span class="ot-label">Outcome</span>
+          <span class="ot-text">A brand that compounds — stronger every quarter</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- OFFER PACKAGES -->
+<div class="packages-section reveal">
+  <div class="packages-header">
+    <div class="section-label">Our Offers</div>
+    <h2 class="section-title">Choose Your<br/><span style="color:var(--accent)">System.</span></h2>
+  </div>
+  <div class="packages-grid">
+    <div class="package-card">
+      <div class="pkg-tag">Offer 01</div>
+      <div class="pkg-name">Campaign<br/>Launch System</div>
+      <p class="pkg-desc">For product launches and events. One explosive campaign that creates massive awareness and drives high-impact results from day one.</p>
+      <ul class="pkg-includes">
+        <li>Campaign concept & strategy</li>
+        <li>Influencer rollout (X network)</li>
+        <li>Paid media amplification</li>
+        <li>PR storytelling & placement</li>
+        <li>Launch day execution</li>
+      </ul>
+      <a href="#services-form" class="pkg-cta">Start a Campaign ↗</a>
+    </div>
+    <div class="package-card featured">
+      <div class="pkg-tag">Offer 02 · Most Popular</div>
+      <div class="pkg-name">Attention<br/>Domination Retainer</div>
+      <p class="pkg-desc">Consistent visibility and market dominance. Monthly retainer that keeps you at the top of your industry's conversation, always.</p>
+      <ul class="pkg-includes">
+        <li>PR narratives & media seeding</li>
+        <li>Influencer seeding (ongoing)</li>
+        <li>Paid media management</li>
+        <li>Content direction & oversight</li>
+        <li>Monthly strategy sessions</li>
+      </ul>
+      <a href="#services-form" class="pkg-cta">Apply for Retainer ↗</a>
+    </div>
+    <div class="package-card">
+      <div class="pkg-tag">Offer 03</div>
+      <div class="pkg-name">Growth<br/>Engine</div>
+      <p class="pkg-desc">Performance + brand in one system. For brands ready to scale revenue predictably through data-driven advertising and creative testing.</p>
+      <ul class="pkg-includes">
+        <li>Paid ads management</li>
+        <li>Funnel build & optimisation</li>
+        <li>Creative testing cycles</li>
+        <li>Weekly data reporting</li>
+        <li>Quarterly growth review</li>
+      </ul>
+      <a href="#services-form" class="pkg-cta">Build the Engine ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- CTA FORM -->
+<div class="page-footer-cta" id="services-form">
+  <h2 class="footer-cta-headline reveal">
+    Ready to stop<br/>posting and start<br/><span>positioning?</span>
+  </h2>
+  <form class="qual-form reveal" onsubmit="handleSubmit(event)">
+    <div class="form-field">
+      <label>Your Name</label>
+      <input type="text" placeholder="John Adeyemi" required/>
+    </div>
+    <div class="form-field">
+      <label>Company / Brand</label>
+      <input type="text" placeholder="Your brand name" required/>
+    </div>
+    <div class="form-field">
+      <label>Email Address</label>
+      <input type="email" placeholder="you@company.com" required/>
+    </div>
+    <div class="form-field">
+      <label>Service You're Interested In</label>
+      <select>
+        <option value="">Select a service...</option>
+        <option>High-Level PR</option>
+        <option>Paid Media & Performance</option>
+        <option>Creative Campaigns</option>
+        <option>Brand Growth Systems</option>
+        <option>Attention Domination Retainer</option>
+        <option>Not sure — let's talk</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>Monthly Marketing Budget</label>
+      <select>
+        <option value="">Select range...</option>
+        <option>₦500K – ₦1M</option>
+        <option>₦1M – ₦5M</option>
+        <option>₦5M – ₦15M</option>
+        <option>₦15M+</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>Phone Number</label>
+      <input type="tel" placeholder="+234 800 000 0000"/>
+    </div>
+    <div class="form-field full">
+      <label>Tell us your challenge</label>
+      <textarea placeholder="What's the problem? What do you want people to feel, know, or do?"></textarea>
+    </div>
+    <div class="form-submit">
+      <span class="form-note">We only work with brands ready to grow.<br/>We'll review and respond within 24hrs.</span>
+      <button type="submit" class="btn-submit">Submit — Let's Engineer This</button>
+    </div>
+  </form>
+</div>
+
+<div class="footer-strip">
+  <span>© 2025 E-Vast Agency. All rights reserved.</span>
+  <div class="footer-strip-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="evast-homepage.html">Home</a>
+  </div>
+</div>
+
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mX=0,mY=0,rX=0,rY=0;
+document.addEventListener('mousemove',e=>{mX=e.clientX;mY=e.clientY;cursor.style.left=mX+'px';cursor.style.top=mY+'px';});
+(function animRing(){rX+=(mX-rX)*.12;rY+=(mY-rY)*.12;ring.style.left=rX+'px';ring.style.top=rY+'px';requestAnimationFrame(animRing);})();
+
+// Service accordion
+function toggleService(id) {
+  const block = document.getElementById(id);
+  const isOpen = block.classList.contains('open');
+  document.querySelectorAll('.service-block').forEach(b => b.classList.remove('open'));
+  if (!isOpen) block.classList.add('open');
+}
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);} });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Form
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.btn-submit');
+  btn.textContent = '✓ Submitted — We\'ll be in touch';
+  btn.style.background = '#2a6b3a';
+  btn.style.color = '#b8f0c8';
+  btn.disabled = true;
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
+</script>
+</body>
+</html>
