@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contact — E-Vast Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#0a0a0a;color:#f0ede6;font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;cursor:none;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+img{display:block;max-width:100%;}
+a{color:inherit;}
+
+/* ── DESIGN TOKENS ── */
+:root{
+  --black:#0a0a0a;
+  --off-white:#f0ede6;
+  --dim:#7a7672;
+  --accent:#e8a020;
+  --accent-h:#f0b030;
+  --border:rgba(240,237,230,0.10);
+  --border-h:rgba(240,237,230,0.22);
+  --card:#0e0e0e;
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+  --font-mono:'DM Mono',monospace;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(232,160,32,.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,opacity .2s;}
+body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:18px;height:18px;}
+body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:56px;height:56px;opacity:.4;}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.6;transform:scale(1.3);}}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.1s;}.rd2{transition-delay:.2s;}.rd3{transition-delay:.3s;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:72px;border-bottom:1px solid var(--border);background:rgba(10,10,10,.88);backdrop-filter:blur(12px);}
+.nav-logo{font-family:var(--font-display);font-size:28px;letter-spacing:.06em;color:var(--off-white);text-decoration:none;line-height:1;}
+.nav-logo span{color:var(--accent);}
+.nav-links{display:flex;gap:40px;list-style:none;}
+.nav-links a{font-family:var(--font-mono);font-size:11px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .2s;position:relative;padding-bottom:2px;}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--accent);transition:width .25s;}
+.nav-links a:hover,.nav-links a.active{color:var(--off-white);}
+.nav-links a.active::after,.nav-links a:hover::after{width:100%;}
+.nav-cta{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:var(--accent);color:var(--black);border:none;padding:10px 24px;cursor:none;font-weight:400;transition:background .2s,transform .15s;}
+.nav-cta:hover{background:var(--accent-h);transform:translateY(-1px);}
+
+/* ── HERO — full-height split ── */
+.contact-hero{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  padding-top:72px;
+  border-bottom:1px solid var(--border);
+}
+
+/* LEFT panel */
+.hero-left{
+  padding:80px 56px 80px 48px;
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;justify-content:space-between;
+  position:relative;overflow:hidden;
+  background:var(--black);
+}
+/* Decorative grid */
+.hero-left::after{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(240,237,230,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,.025) 1px,transparent 1px);
+  background-size:80px 80px;pointer-events:none;
+}
+/* Accent vertical rule */
+.hero-accent-rule{
+  position:absolute;top:0;left:48px;width:1px;height:100%;
+  background:linear-gradient(to bottom,transparent,var(--accent) 40%,transparent);
+  opacity:.22;pointer-events:none;
+}
+/* Watermark */
+.hero-wm{
+  position:absolute;font-family:var(--font-display);
+  font-size:260px;color:rgba(240,237,230,.018);
+  bottom:-40px;right:-20px;letter-spacing:.04em;
+  pointer-events:none;user-select:none;line-height:1;
+}
+
+.hero-left-inner{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:space-between;height:100%;}
+
+.hero-label{
+  font-family:var(--font-mono);font-size:10px;font-weight:300;
+  letter-spacing:.25em;text-transform:uppercase;color:var(--accent);
+  display:flex;align-items:center;gap:14px;margin-bottom:36px;
+  opacity:0;animation:fadeUp .8s ease .3s forwards;
+}
+.hero-label::before{content:'';display:block;width:28px;height:1px;background:var(--accent);}
+
+.contact-headline{
+  font-family:var(--font-display);
+  font-size:clamp(72px,9.5vw,140px);
+  line-height:.88;letter-spacing:.01em;
+  color:var(--off-white);
+  opacity:0;animation:fadeUp .9s ease .5s forwards;
+}
+.contact-headline .ac{color:var(--accent);}
+
+.hero-left-bottom{
+  opacity:0;animation:fadeUp .9s ease .75s forwards;
+}
+.hero-desc{
+  font-size:16px;font-weight:300;color:var(--dim);
+  line-height:1.8;max-width:380px;margin-bottom:36px;
+}
+.hero-desc strong{color:var(--off-white);font-weight:400;}
+
+/* Live response badge */
+.response-badge{
+  display:inline-flex;align-items:center;gap:12px;
+  border:1px solid var(--border);padding:14px 20px;
+  background:rgba(240,237,230,.02);
+}
+.badge-dot{
+  width:8px;height:8px;background:#3ecf6a;
+  border-radius:50%;flex-shrink:0;
+  animation:pulseDot 2s ease-in-out infinite;
+}
+.badge-text{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--off-white);}
+
+/* Right panel — form */
+.hero-right{
+  display:flex;flex-direction:column;
+  background:var(--black);
+  overflow:hidden;
+}
+
+/* ── STEP INDICATOR ── */
+.form-steps{
+  display:flex;border-bottom:1px solid var(--border);
+  background:#0d0d0d;flex-shrink:0;
+}
+.form-step{
+  flex:1;padding:18px 20px;border-right:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;
+  opacity:.3;transition:opacity .3s;
+}
+.form-step:last-child{border-right:none;}
+.form-step.active{opacity:1;}
+.form-step.done{opacity:.55;}
+.step-num{
+  width:22px;height:22px;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:10px;font-weight:300;
+  color:var(--dim);flex-shrink:0;
+  transition:background .3s,border-color .3s,color .3s;
+}
+.form-step.active .step-num{border-color:var(--accent);color:var(--accent);}
+.form-step.done .step-num{background:var(--accent);border-color:var(--accent);color:var(--black);}
+.step-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);}
+.form-step.active .step-label{color:var(--off-white);}
+
+/* Progress bar */
+.form-progress{height:2px;background:var(--border);flex-shrink:0;}
+.form-progress-fill{height:100%;background:var(--accent);transition:width .5s ease;}
+
+/* ── PANELS ── */
+.form-panels{flex:1;position:relative;min-height:500px;}
+.form-panel{
+  position:absolute;inset:0;
+  padding:48px;
+  display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;
+  transform:translateX(40px);
+  transition:opacity .4s ease,transform .4s ease;
+  overflow-y:auto;
+}
+.form-panel.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.form-panel.exit{opacity:0;transform:translateX(-40px);}
+
+.panel-title{
+  font-family:var(--font-display);font-size:40px;
+  letter-spacing:.03em;color:var(--off-white);
+  line-height:1;margin-bottom:6px;
+}
+.panel-sub{
+  font-size:13px;font-weight:300;color:var(--dim);
+  margin-bottom:36px;
+}
+
+.field-group{display:flex;flex-direction:column;gap:24px;flex:1;}
+
+/* Input fields */
+.field{display:flex;flex-direction:column;gap:8px;}
+.field label{
+  font-family:var(--font-mono);font-size:10px;font-weight:300;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
+}
+.field input,.field select,.field textarea{
+  background:transparent;border:none;
+  border-bottom:1px solid var(--border);
+  color:var(--off-white);font-family:var(--font-body);
+  font-size:15px;font-weight:300;
+  padding:10px 0;outline:none;
+  transition:border-color .25s;cursor:none;width:100%;
+}
+.field select option{background:#1a1a1a;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);}
+.field input::placeholder,.field textarea::placeholder{color:rgba(122,118,114,.45);}
+.field textarea{resize:none;min-height:90px;}
+
+/* Radio options */
+.radio-group{display:flex;flex-direction:column;gap:2px;background:var(--border);}
+.radio-opt{
+  background:var(--card);display:flex;align-items:center;gap:14px;
+  padding:14px 18px;cursor:none;transition:background .2s;
+}
+.radio-opt:hover{background:#141414;}
+.radio-opt.sel{background:rgba(232,160,32,.06);}
+.radio-opt.sel::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--accent);}
+.radio-opt{position:relative;}
+.r-circle{width:16px;height:16px;border:1px solid var(--border);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:border-color .2s;}
+.radio-opt.sel .r-circle{border-color:var(--accent);}
+.r-dot{width:7px;height:7px;background:var(--accent);border-radius:50%;opacity:0;transform:scale(0);transition:opacity .2s,transform .2s;}
+.radio-opt.sel .r-dot{opacity:1;transform:scale(1);}
+.r-label{font-size:14px;font-weight:300;color:var(--off-white);}
+.r-sub{font-family:var(--font-mono);font-size:10px;font-weight:300;color:var(--dim);margin-top:2px;letter-spacing:.08em;}
+
+/* Checkbox options */
+.check-group{display:flex;flex-direction:column;gap:2px;background:var(--border);}
+.check-opt{
+  background:var(--card);display:flex;align-items:center;gap:14px;
+  padding:14px 18px;cursor:none;transition:background .2s;
+}
+.check-opt:hover{background:#141414;}
+.check-opt.chk{background:rgba(232,160,32,.05);}
+.c-box{
+  width:16px;height:16px;border:1px solid var(--border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;color:transparent;
+  transition:border-color .2s,background .2s,color .2s;
+}
+.check-opt.chk .c-box{border-color:var(--accent);background:var(--accent);color:var(--black);}
+.c-label{font-size:13px;font-weight:300;color:var(--off-white);}
+
+/* Panel nav buttons */
+.panel-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:32px;margin-top:auto;
+  border-top:1px solid var(--border);flex-shrink:0;
+}
+.btn-back{
+  font-family:var(--font-mono);font-size:11px;font-weight:300;
+  letter-spacing:.15em;text-transform:uppercase;
+  background:transparent;color:var(--dim);
+  border:1px solid var(--border);padding:13px 26px;
+  cursor:none;transition:color .2s,border-color .2s;
+}
+.btn-back:hover{color:var(--off-white);border-color:var(--border-h);}
+.btn-next{
+  font-family:var(--font-mono);font-size:11px;font-weight:400;
+  letter-spacing:.15em;text-transform:uppercase;
+  background:var(--accent);color:var(--black);
+  border:none;padding:13px 36px;cursor:none;
+  transition:background .2s,transform .15s;
+}
+.btn-next:hover{background:var(--accent-h);transform:translateY(-1px);}
+.btn-next:disabled{background:rgba(232,160,32,.3);color:rgba(10,10,10,.5);transform:none;cursor:not-allowed;}
+
+/* Summary rows */
+.summary-row{
+  background:var(--card);padding:14px 22px;
+  display:grid;grid-template-columns:110px 1fr;gap:16px;
+  border-bottom:1px solid var(--border);
+}
+.summary-row:last-child{border-bottom:none;}
+.s-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);}
+.s-val{font-size:13px;font-weight:300;color:var(--off-white);line-height:1.5;}
+
+/* ── SUCCESS STATE ── */
+.success-state{
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  padding:80px 48px;text-align:center;flex:1;gap:20px;
+}
+.success-state.show{display:flex;}
+.success-icon{
+  width:80px;height:80px;
+  border:1px solid rgba(62,207,106,.3);background:rgba(62,207,106,.06);
+  display:flex;align-items:center;justify-content:center;
+  font-size:34px;margin-bottom:4px;
+}
+.success-title{font-family:var(--font-display);font-size:56px;letter-spacing:.03em;color:var(--off-white);line-height:1;}
+.success-sub{font-size:15px;font-weight:300;color:var(--dim);line-height:1.7;max-width:320px;}
+.success-sub strong{color:var(--off-white);font-weight:400;}
+.success-note{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-top:8px;}
+.btn-success{
+  font-family:var(--font-mono);font-size:11px;font-weight:400;
+  letter-spacing:.15em;text-transform:uppercase;
+  background:var(--accent);color:var(--black);
+  border:none;padding:14px 36px;cursor:none;
+  text-decoration:none;display:inline-block;
+  transition:background .2s;margin-top:4px;
+}
+.btn-success:hover{background:var(--accent-h);}
+
+/* ── INFO STRIP ── */
+.info-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--border);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.info-cell{
+  background:var(--black);padding:44px 40px;
+  position:relative;overflow:hidden;transition:background .25s;
+}
+.info-cell:hover{background:#0f0f0f;}
+.info-cell::after{
+  content:'';position:absolute;bottom:0;left:40px;
+  width:0;height:2px;background:var(--accent);
+  transition:width .4s ease;
+}
+.info-cell:hover::after{width:calc(100% - 80px);}
+.ic-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+.ic-value{font-family:var(--font-display);font-size:22px;letter-spacing:.03em;color:var(--off-white);line-height:1.2;margin-bottom:6px;}
+.ic-sub{font-size:13px;font-weight:300;color:var(--dim);}
+
+/* ── WHO WE WORK WITH ── */
+.qualify-section{
+  padding:100px 48px;border-bottom:1px solid var(--border);
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;
+}
+.section-label{
+  font-family:var(--font-mono);font-size:10px;font-weight:300;
+  letter-spacing:.25em;text-transform:uppercase;color:var(--accent);
+  margin-bottom:20px;display:flex;align-items:center;gap:14px;
+}
+.section-label::before{content:'';display:block;width:28px;height:1px;background:var(--accent);}
+.section-title{
+  font-family:var(--font-display);font-size:clamp(48px,6.5vw,80px);
+  line-height:.93;letter-spacing:.01em;color:var(--off-white);margin-bottom:28px;
+}
+.section-title span{color:var(--accent);}
+.qualify-desc{font-size:15px;font-weight:300;color:var(--dim);line-height:1.8;max-width:360px;}
+
+.qualify-cards{display:flex;flex-direction:column;gap:2px;background:var(--border);}
+.qualify-card{
+  background:var(--card);padding:26px 32px;
+  display:flex;align-items:flex-start;gap:18px;
+  transition:background .25s;
+}
+.qualify-card:hover{background:#111;}
+.qc-icon{font-size:20px;flex-shrink:0;padding-top:2px;}
+.qc-title{font-family:var(--font-display);font-size:22px;letter-spacing:.03em;color:var(--off-white);margin-bottom:4px;}
+.qc-desc{font-size:13px;font-weight:300;color:var(--dim);line-height:1.6;}
+
+.not-for{
+  background:#0d0d0d;border-top:1px solid var(--border);
+  padding:28px 32px;
+}
+.not-for-title{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:14px;}
+.not-for-tags{display:flex;gap:10px;flex-wrap:wrap;}
+.not-tag{
+  font-family:var(--font-mono);font-size:10px;font-weight:300;
+  letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--border);padding:8px 14px;color:var(--dim);
+}
+
+/* ── SOCIAL SECTION ── */
+.social-section{
+  padding:80px 48px;border-bottom:1px solid var(--border);
+  display:grid;grid-template-columns:1fr auto;gap:60px;align-items:center;
+}
+.social-headline{font-family:var(--font-display);font-size:clamp(40px,5vw,64px);letter-spacing:.02em;color:var(--off-white);line-height:1;margin-bottom:10px;}
+.social-sub{font-size:14px;font-weight:300;color:var(--dim);}
+.social-links{display:flex;gap:2px;background:var(--border);}
+.social-link{
+  background:var(--card);width:100px;height:100px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  text-decoration:none;transition:background .2s;cursor:none;
+}
+.social-link:hover{background:var(--accent);}
+.social-link:hover .si,.social-link:hover .sn{color:var(--black);}
+.si{font-size:22px;color:var(--off-white);transition:color .2s;}
+.sn{font-family:var(--font-mono);font-size:9px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);transition:color .2s;}
+
+/* ── MARQUEE STRIP ── */
+.marquee-strip{
+  overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:14px 0;white-space:nowrap;
+}
+.marquee-inner{display:inline-flex;animation:ticker 22s linear infinite;}
+.m-text{font-family:var(--font-display);font-size:16px;letter-spacing:.15em;color:var(--dim);padding:0 40px;}
+.m-text .dot{color:var(--accent);margin:0 8px;}
+
+/* ── FOOTER ── */
+.page-footer{
+  padding:52px 48px;display:flex;
+  justify-content:space-between;align-items:center;
+  border-top:1px solid var(--border);
+}
+.footer-brand{font-family:var(--font-display);font-size:28px;letter-spacing:.06em;color:var(--off-white);text-decoration:none;}
+.footer-brand span{color:var(--accent);}
+.footer-links{display:flex;gap:28px;}
+.footer-links a{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .2s;}
+.footer-links a:hover{color:var(--off-white);}
+.footer-copy{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--dim);}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html"><span>E</span>-VAST</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('form-panel-1').scrollIntoView({behavior:'smooth'})">Apply Now</button>
+</nav>
+
+<!-- HERO — split layout -->
+<div class="contact-hero" id="form-panel-1">
+
+  <!-- LEFT: headline -->
+  <div class="hero-left">
+    <div class="hero-accent-rule"></div>
+    <div class="hero-wm">CONTACT</div>
+    <div class="hero-left-inner">
+      <div>
+        <div class="hero-label">Get In Touch</div>
+        <h1 class="contact-headline">
+          Let's<br/>Make<br/>Your<br/>Brand<br/><span class="ac">Loud.</span>
+        </h1>
+      </div>
+      <div class="hero-left-bottom">
+        <p class="hero-desc">
+          We don't take every brief.<br/>We take the right ones.<br/><br/>
+          Tell us about your brand and your goals. <strong>If we're the right fit, you'll hear from us within 24 hours.</strong>
+        </p>
+        <div class="response-badge">
+          <div class="badge-dot"></div>
+          <span class="badge-text">Responding within 24 hours</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: multi-step form -->
+  <div class="hero-right">
+
+    <div class="form-steps" id="form-steps">
+      <div class="form-step active" data-step="1">
+        <div class="step-num">1</div>
+        <div class="step-label">About You</div>
+      </div>
+      <div class="form-step" data-step="2">
+        <div class="step-num">2</div>
+        <div class="step-label">Your Brand</div>
+      </div>
+      <div class="form-step" data-step="3">
+        <div class="step-num">3</div>
+        <div class="step-label">The Goal</div>
+      </div>
+      <div class="form-step" data-step="4">
+        <div class="step-num">4</div>
+        <div class="step-label">Review</div>
+      </div>
+    </div>
+
+    <div class="form-progress">
+      <div class="form-progress-fill" id="progress-fill" style="width:25%"></div>
+    </div>
+
+    <div class="form-panels" id="form-panels">
+
+      <!-- PANEL 1 -->
+      <div class="form-panel active" id="panel-1">
+        <div class="panel-title">About You</div>
+        <p class="panel-sub">Who's reaching out? Start with the basics.</p>
+        <div class="field-group">
+          <div class="field">
+            <label>Full Name *</label>
+            <input type="text" id="f-name" placeholder="John Adeyemi"/>
+          </div>
+          <div class="field">
+            <label>Email Address *</label>
+            <input type="email" id="f-email" placeholder="you@company.com"/>
+          </div>
+          <div class="field">
+            <label>Phone Number</label>
+            <input type="tel" id="f-phone" placeholder="+234 800 000 0000"/>
+          </div>
+          <div class="field">
+            <label>Your Role</label>
+            <input type="text" id="f-role" placeholder="CEO, Marketing Director, Founder…"/>
+          </div>
+        </div>
+        <div class="panel-nav">
+          <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;color:var(--dim);">Step 1 of 4</span>
+          <button class="btn-next" onclick="nextPanel(1)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- PANEL 2 -->
+      <div class="form-panel" id="panel-2">
+        <div class="panel-title">Your Brand</div>
+        <p class="panel-sub">Tell us about the brand we'd be working with.</p>
+        <div class="field-group">
+          <div class="field">
+            <label>Brand / Company Name *</label>
+            <input type="text" id="f-brand" placeholder="Your brand name"/>
+          </div>
+          <div class="field">
+            <label>Industry</label>
+            <select id="f-industry">
+              <option value="">Select your industry...</option>
+              <option>Fintech / Financial Services</option>
+              <option>Tech / SaaS / Startup</option>
+              <option>FMCG / Consumer Goods</option>
+              <option>Events / Entertainment</option>
+              <option>E-commerce / Retail</option>
+              <option>Fashion / Lifestyle</option>
+              <option>Real Estate</option>
+              <option>Healthcare</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Monthly Marketing Budget *</label>
+            <div class="radio-group" id="budget-group">
+              <div class="radio-opt" onclick="selectRadio('budget-group',this)">
+                <div class="r-circle"><div class="r-dot"></div></div>
+                <div><div class="r-label">₦500K – ₦1M / month</div><div class="r-sub">Entry level · Campaign launches</div></div>
+              </div>
+              <div class="radio-opt" onclick="selectRadio('budget-group',this)">
+                <div class="r-circle"><div class="r-dot"></div></div>
+                <div><div class="r-label">₦1M – ₦5M / month</div><div class="r-sub">Growth stage · PR + paid media</div></div>
+              </div>
+              <div class="radio-opt" onclick="selectRadio('budget-group',this)">
+                <div class="r-circle"><div class="r-dot"></div></div>
+                <div><div class="r-label">₦5M – ₦15M / month</div><div class="r-sub">Scale stage · Full system</div></div>
+              </div>
+              <div class="radio-opt" onclick="selectRadio('budget-group',this)">
+                <div class="r-circle"><div class="r-dot"></div></div>
+                <div><div class="r-label">₦15M+ / month</div><div class="r-sub">Enterprise · Market domination</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-nav">
+          <button class="btn-back" onclick="prevPanel(2)">← Back</button>
+          <button class="btn-next" onclick="nextPanel(2)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- PANEL 3 -->
+      <div class="form-panel" id="panel-3">
+        <div class="panel-title">The Goal</div>
+        <p class="panel-sub">What do you need from E-Vast? Select all that apply.</p>
+        <div class="field-group">
+          <div class="field">
+            <label>Services You Need</label>
+            <div class="check-group">
+              <div class="check-opt" onclick="toggleCheck(this)">
+                <div class="c-box">✓</div><span class="c-label">High-Level PR & Narrative Control</span>
+              </div>
+              <div class="check-opt" onclick="toggleCheck(this)">
+                <div class="c-box">✓</div><span class="c-label">Paid Media & Performance Advertising</span>
+              </div>
+              <div class="check-opt" onclick="toggleCheck(this)">
+                <div class="c-box">✓</div><span class="c-label">Creative Campaign Development</span>
+              </div>
+              <div class="check-opt" onclick="toggleCheck(this)">
+                <div class="c-box">✓</div><span class="c-label">Brand Growth Systems (Retainer)</span>
+              </div>
+              <div class="check-opt" onclick="toggleCheck(this)">
+                <div class="c-box">✓</div><span class="c-label">Product / Event Launch Campaign</span>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Timeline</label>
+            <div class="radio-group" id="timeline-group">
+              <div class="radio-opt" onclick="selectRadio('timeline-group',this)">
+                <div class="r-circle"><div class="r-dot"></div></div>
+                <div class="r-label">ASAP — We need to move now</div>
+              </div>
+              <div class="radio-opt" onclick="selectRadio('timeline-group',this)">
+                <div class="r-circle"><div class="r-dot"></div></div>
+                <div class="r-label">Within the next month</div>
+              </div>
+              <div class="radio-opt" onclick="selectRadio('timeline-group',this)">
+                <div class="r-circle"><div class="r-dot"></div></div>
+                <div class="r-label">Planning 2–3 months out</div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Describe your challenge or goal</label>
+            <textarea id="f-goal" placeholder="What problem are you solving? What does success look like?"></textarea>
+          </div>
+        </div>
+        <div class="panel-nav">
+          <button class="btn-back" onclick="prevPanel(3)">← Back</button>
+          <button class="btn-next" onclick="nextPanel(3)">Review →</button>
+        </div>
+      </div>
+
+      <!-- PANEL 4: REVIEW -->
+      <div class="form-panel" id="panel-4">
+        <div class="panel-title">Review & Submit</div>
+        <p class="panel-sub">Confirm your details before we receive your brief.</p>
+        <div class="field-group">
+          <div id="summary-box" style="background:var(--border);display:flex;flex-direction:column;gap:1px;flex:1;"></div>
+          <p style="font-size:13px;font-weight:300;color:var(--dim);line-height:1.7;border-top:1px solid var(--border);padding-top:20px;">
+            By submitting, you agree E-Vast may contact you about your enquiry. We review every submission personally and respond within <strong style="color:var(--off-white);font-weight:400;">24 hours</strong> if we're a fit.
+          </p>
+        </div>
+        <div class="panel-nav">
+          <button class="btn-back" onclick="prevPanel(4)">← Back</button>
+          <button class="btn-next" onclick="submitForm()">Submit Brief ↗</button>
+        </div>
+      </div>
+
+    </div><!-- /form-panels -->
+
+    <!-- SUCCESS -->
+    <div class="success-state" id="success-state">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Brief Received.</div>
+      <p class="success-sub">Our team will review and <strong>reach out within 24 hours</strong> if we're the right fit for your brand.</p>
+      <div class="success-note">Follow us on X for daily insights</div>
+      <a href="projects.html" class="btn-success">View Our Work ↗</a>
+    </div>
+
+  </div><!-- /hero-right -->
+</div><!-- /contact-hero -->
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="m-text">Attention<span class="dot">✦</span>Influence<span class="dot">✦</span>Revenue<span class="dot">✦</span>The Next Level<span class="dot">✦</span>Engineer It<span class="dot">✦</span>Control The Narrative<span class="dot">✦</span>Attention<span class="dot">✦</span>Influence<span class="dot">✦</span>Revenue<span class="dot">✦</span>The Next Level<span class="dot">✦</span>Engineer It<span class="dot">✦</span>Control The Narrative<span class="dot">✦</span></span>
+  </div>
+</div>
+
+<!-- INFO STRIP -->
+<div class="info-strip reveal">
+  <div class="info-cell">
+    <div class="ic-label">Location</div>
+    <div class="ic-value">Lagos, Nigeria</div>
+    <div class="ic-sub">Serving clients across Africa</div>
+  </div>
+  <div class="info-cell">
+    <div class="ic-label">Email</div>
+    <div class="ic-value">hello@evast.agency</div>
+    <div class="ic-sub">General enquiries</div>
+  </div>
+  <div class="info-cell">
+    <div class="ic-label">Response Time</div>
+    <div class="ic-value">Within 24hrs</div>
+    <div class="ic-sub">Mon – Fri · 8am – 6pm WAT</div>
+  </div>
+  <div class="info-cell">
+    <div class="ic-label">New Clients</div>
+    <div class="ic-value">Via brief only</div>
+    <div class="ic-sub">Complete the form above</div>
+  </div>
+</div>
+
+<!-- WHO WE WORK WITH -->
+<div class="qualify-section">
+  <div class="reveal">
+    <div class="section-label">Who We Work With</div>
+    <h2 class="section-title">The Right<br/>Brands.<br/><span>Not Every</span><br/>Brand.</h2>
+    <p class="qualify-desc">E-Vast partners with brands that understand strategy, are already investing in growth, and are ready to move fast and trust the process.</p>
+  </div>
+  <div class="reveal rd1">
+    <div class="qualify-cards">
+      <div class="qualify-card">
+        <div class="qc-icon">🚀</div>
+        <div><div class="qc-title">Tech Startups</div><div class="qc-desc">Launch-stage or scaling. Ready to dominate their category's narrative.</div></div>
+      </div>
+      <div class="qualify-card">
+        <div class="qc-icon">📦</div>
+        <div><div class="qc-title">FMCG Brands</div><div class="qc-desc">Launching products or entering new markets. Need mass attention fast.</div></div>
+      </div>
+      <div class="qualify-card">
+        <div class="qc-icon">🎟</div>
+        <div><div class="qc-title">Event Organisers</div><div class="qc-desc">Concerts, festivals, corporate events. We drive sell-through, not just awareness.</div></div>
+      </div>
+      <div class="qualify-card">
+        <div class="qc-icon">💳</div>
+        <div><div class="qc-title">Fintech & Finance</div><div class="qc-desc">Trust and attention are everything in this space. We build both at scale.</div></div>
+      </div>
+    </div>
+    <div class="not-for">
+      <div class="not-for-title">Not the right fit for:</div>
+      <div class="not-for-tags">
+        <div class="not-tag">"Just post for me"</div>
+        <div class="not-tag">Low-budget brands</div>
+        <div class="not-tag">Micromanagers</div>
+        <div class="not-tag">No strategy budget</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOCIAL -->
+<div class="social-section reveal">
+  <div>
+    <div class="social-headline">Follow<br/>The Work.</div>
+    <p class="social-sub">Daily insights on attention engineering, PR strategy, and brand growth.</p>
+  </div>
+  <div class="social-links">
+    <a class="social-link" href="#" title="X / Twitter">
+      <span class="si">𝕏</span><span class="sn">Twitter / X</span>
+    </a>
+    <a class="social-link" href="#" title="Instagram">
+      <span class="si">◻</span><span class="sn">Instagram</span>
+    </a>
+    <a class="social-link" href="#" title="LinkedIn">
+      <span class="si" style="font-family:serif;font-style:italic;">in</span><span class="sn">LinkedIn</span>
+    </a>
+    <a class="social-link" href="#" title="TikTok">
+      <span class="si">♪</span><span class="sn">TikTok</span>
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="page-footer">
+  <a class="footer-brand" href="index.html"><span>E</span>-VAST</a>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="projects.html">Projects</a>
+  </div>
+  <div class="footer-copy">© 2025 E-Vast Agency</div>
+</div>
+
+<script>
+/* ── CURSOR ── */
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let mX=0,mY=0,rX=0,rY=0;
+document.addEventListener('mousemove',e=>{
+  mX=e.clientX;mY=e.clientY;
+  cursor.style.left=mX+'px';cursor.style.top=mY+'px';
+});
+(function animRing(){
+  rX+=(mX-rX)*.12;rY+=(mY-rY)*.12;
+  ring.style.left=rX+'px';ring.style.top=rY+'px';
+  requestAnimationFrame(animRing);
+})();
+document.addEventListener('mouseleave',()=>{cursor.style.opacity='0';ring.style.opacity='0';});
+document.addEventListener('mouseenter',()=>{cursor.style.opacity='1';ring.style.opacity='1';});
+
+/* ── SCROLL REVEAL ── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ── MULTI-STEP FORM ── */
+let currentPanel=1;
+const formData={};
+
+function nextPanel(from){
+  if(!validatePanel(from))return;
+  collectData(from);
+  if(from===3)buildSummary();
+  goTo(from+1);
+}
+function prevPanel(from){goTo(from-1);}
+
+function goTo(to){
+  const cur=document.getElementById('panel-'+currentPanel);
+  const next=document.getElementById('panel-'+to);
+  cur.classList.remove('active');
+  cur.classList.add('exit');
+  setTimeout(()=>cur.classList.remove('exit'),400);
+  next.classList.add('active');
+  currentPanel=to;
+  updateSteps();
+  document.getElementById('progress-fill').style.width=(to/4*100)+'%';
+}
+
+function updateSteps(){
+  document.querySelectorAll('.form-step').forEach(s=>{
+    const n=parseInt(s.dataset.step);
+    s.classList.remove('active','done');
+    if(n===currentPanel)s.classList.add('active');
+    else if(n<currentPanel)s.classList.add('done');
+  });
+}
+
+function validatePanel(p){
+  if(p===1){
+    const name=document.getElementById('f-name').value.trim();
+    const email=document.getElementById('f-email').value.trim();
+    if(!name||!email){showError('Please fill in your name and email.');return false;}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showError('Please enter a valid email address.');return false;}
+  }
+  if(p===2){
+    const brand=document.getElementById('f-brand').value.trim();
+    if(!brand){showError('Please enter your brand name.');return false;}
+  }
+  clearError();
+  return true;
+}
+
+function showError(msg){
+  let err=document.getElementById('form-err');
+  if(!err){
+    err=document.createElement('div');
+    err.id='form-err';
+    err.style.cssText='font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;color:#e85020;padding:10px 48px;background:rgba(232,80,32,.06);border-top:1px solid rgba(232,80,32,.2);flex-shrink:0;';
+    document.getElementById('form-panels').before(err);
+  }
+  err.textContent=msg;
+}
+function clearError(){
+  const e=document.getElementById('form-err');
+  if(e)e.textContent='';
+}
+
+function collectData(p){
+  if(p===1){
+    formData.name=document.getElementById('f-name').value;
+    formData.email=document.getElementById('f-email').value;
+    formData.phone=document.getElementById('f-phone').value;
+    formData.role=document.getElementById('f-role').value;
+  }
+  if(p===2){
+    formData.brand=document.getElementById('f-brand').value;
+    formData.industry=document.getElementById('f-industry').value;
+    formData.budget=document.querySelector('#budget-group .sel .r-label')?.textContent||'Not selected';
+  }
+  if(p===3){
+    formData.services=[...document.querySelectorAll('.check-opt.chk .c-label')].map(el=>el.textContent).join(', ')||'Not selected';
+    formData.timeline=document.querySelector('#timeline-group .sel .r-label')?.textContent||'Not selected';
+    formData.goal=document.getElementById('f-goal').value;
+  }
+}
+
+function buildSummary(){
+  const box=document.getElementById('summary-box');
+  const rows=[
+    {l:'Name',v:formData.name},
+    {l:'Email',v:formData.email},
+    {l:'Phone',v:formData.phone||'—'},
+    {l:'Role',v:formData.role||'—'},
+    {l:'Brand',v:formData.brand},
+    {l:'Industry',v:formData.industry||'—'},
+    {l:'Budget',v:formData.budget},
+    {l:'Services',v:formData.services},
+    {l:'Timeline',v:formData.timeline},
+    {l:'Goal',v:formData.goal||'—'},
+  ];
+  box.innerHTML=rows.map(r=>`
+    <div class="summary-row">
+      <div class="s-label">${r.l}</div>
+      <div class="s-val">${r.v}</div>
+    </div>`).join('');
+}
+
+function submitForm(){
+  collectData(3);
+  // Wire to backend: fetch('/api/contact',{method:'POST',body:JSON.stringify(formData)})
+  document.getElementById('form-steps').style.display='none';
+  document.querySelector('.form-progress').style.display='none';
+  document.getElementById('form-panels').style.display='none';
+  const err=document.getElementById('form-err');
+  if(err)err.style.display='none';
+  document.getElementById('success-state').classList.add('show');
+}
+
+function selectRadio(groupId,el){
+  document.querySelectorAll('#'+groupId+' .radio-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function toggleCheck(el){
+  el.classList.toggle('chk');
+}
+</script>
+</body>
+</html>
