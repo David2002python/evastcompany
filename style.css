@@ -559,7 +559,118 @@ nav.scrolled {
   }
 }
 
+/* ── HAMBURGER BUTTON (hidden on desktop) ── */
+.mobile-menu-btn {
+  display: none;
+}
 
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  /* Hide desktop nav items */
+  .nav-links { display: none; }
+  .nav-cta   { display: none; }
+
+  /* Show hamburger button */
+  .mobile-menu-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    z-index: 201;
+    margin-left: auto;
+  }
+
+  .mobile-menu-btn span {
+    display: block;
+    width: 24px;
+    height: 1.5px;
+    background: #f0ede6;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Animate to X when open */
+  .mobile-menu-btn.open span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  .mobile-menu-btn.open span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  .mobile-menu-btn.open span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  /* Full-screen nav drawer */
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    background: #0a0a0a;
+    z-index: 200;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .mobile-nav.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* Nav links inside drawer */
+  .mobile-nav a {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    letter-spacing: 0.05em;
+    color: #f0ede6;
+    text-decoration: none;
+    padding: 10px 0;
+    width: 78%;
+    text-align: center;
+    border-bottom: 1px solid rgba(240, 237, 230, 0.08);
+    transition: color 0.2s;
+  }
+
+  .mobile-nav a:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-nav a:hover,
+  .mobile-nav a.active {
+    color: #e8a020;
+  }
+
+  /* Get Started CTA inside drawer */
+  .mobile-nav .mobile-nav-cta {
+    margin-top: 28px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: #e8a020;
+    color: #0a0a0a;
+    padding: 14px 40px;
+    border-bottom: none;
+    width: auto;
+  }
+
+  .mobile-nav .mobile-nav-cta:hover {
+    background: #f0b030;
+    color: #0a0a0a;
+  }
+}
   
  
   
