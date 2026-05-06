@@ -839,7 +839,22 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
     <li><a href="#" class="active">Contact</a></li>
   </ul>
   <button class="nav-cta" onclick="document.getElementById('form-panel-1').scrollIntoView({behavior:'smooth'})">Apply Now</button>
+
+  <button class="mobile-menu-btn" id="hamburger" aria-label="Open navigation" aria-expanded="false">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
 </nav>
+
+  <div class="mobile-nav" id="mobile-nav">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="projects.html">Projects</a>
+  <a href="contact.html" class="active">Contact</a>
+  <a href="contact.html" class="mobile-nav-cta">Get Started</a>
+</div>
 
 <!-- HERO — split layout -->
 <div class="contact-hero" id="form-panel-1">
@@ -1306,6 +1321,29 @@ function selectRadio(groupId,el){
 function toggleCheck(el){
   el.classList.toggle('chk');
 }
+</script>
+  <script>
+(function () {
+  var btn = document.getElementById('hamburger');
+  var drawer = document.getElementById('mobile-nav');
+  if (!btn || !drawer) return;
+
+  btn.addEventListener('click', function () {
+    var isOpen = drawer.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', String(isOpen));
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  drawer.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      drawer.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+}());
 </script>
 </body>
 </html>
