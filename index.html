@@ -1181,7 +1181,21 @@ footer {
     <li><a href="contact.html">Contact</a></li>
   </ul>
    <a href="contact.html" class="nav-cta">Get Started</a>
+   <button class="mobile-menu-btn" id="hamburger" aria-label="Open navigation" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+   </button>
 </nav>
+
+  <div class="mobile-nav" id="mobile-nav">
+  <a href="index.html" class="active">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="projects.html">Projects</a>
+  <a href="contact.html">Contact</a>
+  <a href="contact.html" class="mobile-nav-cta">Get Started</a>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -1495,3 +1509,26 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 </body>
 </html>
 
+<script>
+(function () {
+  var btn = document.getElementById('hamburger');
+  var drawer = document.getElementById('mobile-nav');
+  if (!btn || !drawer) return;
+
+  btn.addEventListener('click', function () {
+    var isOpen = drawer.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', String(isOpen));
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  drawer.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      drawer.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+}());
+</script>
