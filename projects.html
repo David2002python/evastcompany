@@ -76,40 +76,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .projects-count{font-family:var(--font-display);font-size:72px;color:var(--off-white);line-height:1;text-align:right;}
 .projects-count span{font-family:var(--font-mono);font-size:12px;font-weight:300;letter-spacing:.2em;color:var(--dim);display:block;margin-top:4px;text-transform:uppercase;}
 
-/* FILTER BAR */
-.filter-bar{
-  padding:0 48px;
-  height:60px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  gap:0;
-  position:sticky;
-  top:72px;
-  z-index:50;
-  background:rgba(10,10,10,.95);
-  backdrop-filter:blur(12px);
-}
-.filter-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-right:32px;flex-shrink:0;}
-.filter-btn{
-  font-family:var(--font-mono);
-  font-size:10px;
-  font-weight:300;
-  letter-spacing:.15em;
-  text-transform:uppercase;
-  color:var(--dim);
-  background:transparent;
-  border:none;
-  border-right:1px solid var(--border);
-  padding:0 24px;
-  height:100%;
-  cursor:none;
-  transition:color .2s,background .2s;
-}
-.filter-btn:first-of-type{border-left:1px solid var(--border);}
-.filter-btn:hover{color:var(--off-white);}
-.filter-btn.active{color:var(--black);background:var(--accent);}
-
 /* PROJECTS GRID */
 .projects-container{padding:0 48px 120px;}
 
@@ -766,16 +732,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
   </div>
 </div>
 
-<!-- FILTER BAR -->
-<div class="filter-bar">
-  <span class="filter-label">Filter by:</span>
-  <button class="filter-btn active" data-filter="all">All Work</button>
-  <button class="filter-btn" data-filter="pr">PR</button>
-  <button class="filter-btn" data-filter="paid">Paid Media</button>
-  <button class="filter-btn" data-filter="creative">Creative</button>
-  <button class="filter-btn" data-filter="brand">Brand Growth</button>
-</div>
-
 <!-- STATS BAR -->
 <div class="stats-bar reveal">
   <div class="stat-cell">
@@ -990,33 +946,6 @@ document.addEventListener('mousemove',e=>{
 document.querySelectorAll('.project-card').forEach(card=>{
   card.addEventListener('mouseenter',()=>{ cursorLabel.style.opacity='1'; });
   card.addEventListener('mouseleave',()=>{ cursorLabel.style.opacity='0'; });
-});
-
-// Filter
-const filterBtns=document.querySelectorAll('.filter-btn');
-filterBtns.forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    filterBtns.forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const filter=btn.dataset.filter;
-    document.querySelectorAll('.project-card[data-category]').forEach(card=>{
-      if(filter==='all'){
-        card.style.opacity='1';card.style.pointerEvents='auto';
-      } else {
-        const cats=card.dataset.category||'';
-        if(cats.includes(filter)){
-          card.style.opacity='1';card.style.pointerEvents='auto';
-        } else {
-          card.style.opacity='0.25';card.style.pointerEvents='none';
-        }
-      }
-    });
-  });
-});
-
-// Transition for filter
-document.querySelectorAll('.project-card[data-category]').forEach(c=>{
-  c.style.transition='opacity .35s ease';
 });
 
 // Reveal
