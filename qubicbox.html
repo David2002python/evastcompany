@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Qubicbox — E-Vast Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--black:#0a0a0a;--off-white:#f0ede6;--dim:#7a7672;--accent:#e8a020;--border:rgba(240,237,230,0.1);--font-display:'Bebas Neue',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'DM Mono',monospace;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--off-white);font-family:var(--font-body);font-size:16px;line-height:1.6;cursor:none;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+#cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(232,160,32,.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s;}
+body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:18px;height:18px;}
+body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:56px;height:56px;opacity:.4;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:72px;border-bottom:1px solid var(--border);background:rgba(10,10,10,.92);backdrop-filter:blur(12px);}
+.nav-logo{font-family:var(--font-display);font-size:28px;letter-spacing:.06em;color:var(--off-white);text-decoration:none;}.nav-logo span{color:var(--accent);}
+.nav-back{font-family:var(--font-mono);font-size:11px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);text-decoration:none;display:flex;align-items:center;gap:10px;transition:color .2s;}.nav-back::before{content:'←';font-size:14px;}.nav-back:hover{color:var(--off-white);}
+.nav-cta-link{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:var(--accent);color:var(--black);padding:10px 24px;text-decoration:none;transition:background .2s;}.nav-cta-link:hover{background:#f0b030;}
+.cs-hero{min-height:100vh;padding:72px 48px 0;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;border-bottom:1px solid var(--border);}
+.cs-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;}
+.cs-hero-wm{position:absolute;font-family:var(--font-display);font-size:clamp(120px,20vw,280px);color:rgba(240,237,230,.03);right:-40px;top:50%;transform:translateY(-50%);pointer-events:none;letter-spacing:.04em;line-height:1;}
+.cs-hero-inner{position:relative;z-index:2;padding-bottom:72px;}
+.cs-tag{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:14px;margin-bottom:28px;opacity:0;animation:fadeUp .8s ease .2s forwards;}.cs-tag::before{content:'';display:block;width:28px;height:1px;background:var(--accent);}
+.cs-hero-title{font-family:var(--font-display);font-size:clamp(52px,9vw,130px);line-height:.9;letter-spacing:.01em;color:var(--off-white);margin-bottom:48px;opacity:0;animation:fadeUp .9s ease .4s forwards;}.cs-hero-title span{color:var(--accent);}
+.cs-hero-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);opacity:0;animation:fadeUp .9s ease .6s forwards;}
+.cs-meta-cell{background:rgba(10,10,10,.7);padding:28px 32px;backdrop-filter:blur(8px);}
+.cs-meta-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;}
+.cs-meta-value{font-size:15px;font-weight:300;color:var(--off-white);line-height:1.4;}
+.cs-body{max-width:1200px;margin:0 auto;padding:0 48px;}
+.cs-section{padding:96px 0;border-bottom:1px solid var(--border);}.cs-section:last-child{border-bottom:none;}
+.cs-section-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:14px;margin-bottom:20px;}.cs-section-label::before{content:'';display:block;width:28px;height:1px;background:var(--accent);}
+.cs-section-title{font-family:var(--font-display);font-size:clamp(40px,5.5vw,72px);line-height:.94;letter-spacing:.01em;color:var(--off-white);margin-bottom:40px;}
+.cs-two-col{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.cs-body-text{font-size:16px;font-weight:300;color:var(--dim);line-height:1.9;}.cs-body-text strong{color:var(--off-white);font-weight:400;}.cs-body-text p+p{margin-top:20px;}
+.cs-pillar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);}
+.cs-pillar{background:#0e0e0e;padding:44px 36px;position:relative;overflow:hidden;transition:background .25s;}.cs-pillar:hover{background:#111;}
+.cs-pillar::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;}.cs-pillar:hover::before{transform:scaleX(1);}
+.cs-pillar-num{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;color:var(--accent);margin-bottom:20px;}
+.cs-pillar-title{font-family:var(--font-display);font-size:32px;letter-spacing:.03em;color:var(--off-white);margin-bottom:16px;line-height:1;}
+.cs-pillar-text{font-size:14px;font-weight:300;color:var(--dim);line-height:1.75;}
+.cs-results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin-top:48px;}
+.cs-result-cell{background:var(--black);padding:48px 40px;position:relative;overflow:hidden;}
+.cs-result-cell::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--accent);transition:width .45s ease;}.cs-result-cell:hover::after{width:100%;}
+.cs-result-num{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);color:var(--accent);line-height:1;margin-bottom:10px;}
+.cs-result-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;}
+.cs-result-desc{font-size:14px;font-weight:300;color:rgba(240,237,230,.6);line-height:1.6;}
+.cs-services-list{display:flex;flex-direction:column;gap:2px;background:var(--border);}
+.cs-service-row{background:#0e0e0e;padding:24px 32px;display:flex;align-items:center;gap:20px;transition:background .2s;}.cs-service-row:hover{background:#111;}
+.cs-service-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;flex-shrink:0;}
+.cs-service-name{font-size:15px;font-weight:300;color:var(--off-white);}
+.cs-service-tag{margin-left:auto;font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);}
+.cs-image-grid{display:grid;grid-template-columns:2fr 1fr;gap:2px;background:var(--border);margin-top:48px;}
+.cs-image-cell{background:#0d0d0d;position:relative;overflow:hidden;min-height:300px;display:flex;align-items:center;justify-content:center;}
+.cs-image-cell.tall{min-height:480px;}
+.cs-img-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px;}
+.cs-img-placeholder-icon{width:64px;height:64px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:24px;}
+.cs-img-placeholder-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);text-align:center;}
+.cs-img-placeholder-sub{font-size:12px;font-weight:300;color:rgba(122,118,114,.5);text-align:center;max-width:180px;line-height:1.5;}
+.cs-image-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin-top:2px;}
+.cs-cta-section{padding:100px 48px;background:#0d0d0d;border-top:1px solid var(--border);text-align:center;display:flex;flex-direction:column;align-items:center;gap:32px;}
+.cs-cta-title{font-family:var(--font-display);font-size:clamp(48px,8vw,100px);line-height:.92;color:var(--off-white);}.cs-cta-title span{color:var(--accent);}
+.cs-cta-sub{font-size:16px;font-weight:300;color:var(--dim);max-width:480px;line-height:1.7;}
+.cs-cta-buttons{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+.btn-primary{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;background:var(--accent);color:var(--black);border:none;padding:16px 40px;cursor:none;font-weight:400;transition:background .2s,transform .15s;text-decoration:none;display:inline-block;}.btn-primary:hover{background:#f0b030;transform:translateY(-2px);}
+.btn-ghost{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;background:transparent;color:var(--off-white);border:1px solid var(--border);padding:16px 40px;cursor:none;transition:border-color .2s,transform .15s;text-decoration:none;display:inline-block;}.btn-ghost:hover{border-color:rgba(240,237,230,.4);transform:translateY(-2px);}
+.cs-footer{padding:28px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.cs-footer span{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--dim);}
+.cs-footer a{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--dim);text-decoration:none;transition:color .2s;}.cs-footer a:hover{color:var(--off-white);}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease;}.reveal.visible{opacity:1;transform:translateY(0);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
+.mobile-menu-btn{display:none;}.mobile-nav{display:none;}
+@media(max-width:768px){
+  body{cursor:auto;}#cursor,#cursor-ring{display:none;}
+  nav{padding:0 20px;height:60px;}.nav-logo{font-size:20px;}.nav-cta-link{display:none;}
+  .mobile-menu-btn{display:flex;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:6px;z-index:201;margin-left:auto;}
+  .mobile-menu-btn span{display:block;width:24px;height:1.5px;background:#f0ede6;transition:transform .3s,opacity .3s;}
+  .mobile-menu-btn.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+  .mobile-menu-btn.open span:nth-child(2){opacity:0;}
+  .mobile-menu-btn.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+  .mobile-nav{display:flex;position:fixed;inset:0;background:#0a0a0a;z-index:200;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s ease;}
+  .mobile-nav.open{opacity:1;pointer-events:all;}
+  .mobile-nav a{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:.04em;color:#f0ede6;text-decoration:none;padding:10px 0;width:80%;text-align:center;border-bottom:1px solid rgba(240,237,230,.08);transition:color .2s;}
+  .mobile-nav a:last-child{border-bottom:none;}
+  .mobile-nav a:hover,.mobile-nav a.active{color:#e8a020;}
+  .mobile-nav .mob-cta{margin-top:24px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;background:#e8a020;color:#0a0a0a;padding:14px 36px;border-bottom:none;}
+  .cs-hero{padding:60px 20px 0;}.cs-hero-title{font-size:clamp(44px,13vw,72px);}
+  .cs-hero-meta{grid-template-columns:1fr 1fr;}.cs-meta-cell{padding:16px;}
+  .cs-body{padding:0 20px;}.cs-section{padding:64px 0;}
+  .cs-two-col{grid-template-columns:1fr;gap:32px;}
+  .cs-pillar-grid{grid-template-columns:1fr;}
+  .cs-results-grid{grid-template-columns:1fr 1fr;}
+  .cs-image-grid{grid-template-columns:1fr;}.cs-image-grid-3{grid-template-columns:1fr;}
+  .cs-cta-section{padding:72px 20px;}.cs-cta-title{font-size:clamp(40px,11vw,72px);}
+  .cs-cta-buttons{flex-direction:column;align-items:center;}
+  .btn-primary,.btn-ghost{text-align:center;width:100%;max-width:320px;}
+  .cs-footer{padding:24px 20px;flex-direction:column;gap:10px;text-align:center;}
+}
+@media(max-width:480px){.cs-hero-meta{grid-template-columns:1fr;}.cs-results-grid{grid-template-columns:1fr;}}
+
+.cs-hero-bg{position:absolute;inset:0;background:linear-gradient(145deg,#0f001a 0%,#220035 60%,#380055 100%);opacity:.4;}
+</style>
+</head>
+<body>
+<div id="cursor"></div><div id="cursor-ring"></div>
+<nav>
+  <a class="nav-logo" href="index.html"><span>E</span>-VAST</a>
+  <a class="nav-back" href="projects.html">Back to Projects</a>
+  <a class="nav-cta-link" href="contact.html">Work With Us</a>
+  <button class="mobile-menu-btn" id="hamburger" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a>
+  <a href="projects.html" class="active">Projects</a><a href="contact.html">Contact</a>
+  <a href="contact.html" class="mob-cta">Get Started</a>
+</div>
+
+<div class="cs-hero">
+  <div class="cs-hero-bg"></div><div class="cs-hero-grid"></div>
+  <div class="cs-hero-wm">QUBIC</div>
+  <div class="cs-hero-inner">
+    <div class="cs-tag">Cybersecurity · Brand Growth</div>
+    <h1 class="cs-hero-title">Qubicbox<br/>— <span>Foundational<br/>Exposure</span></h1>
+    <div class="cs-hero-meta"><div class="cs-meta-cell"><div class="cs-meta-label">Client</div><div class="cs-meta-value">Qubicbox</div></div><div class="cs-meta-cell"><div class="cs-meta-label">Services</div><div class="cs-meta-value">Brand Growth · Content Strategy · Social Media</div></div><div class="cs-meta-cell"><div class="cs-meta-label">Industry</div><div class="cs-meta-value">Cybersecurity · Tech</div></div><div class="cs-meta-cell"><div class="cs-meta-label">Outcome</div><div class="cs-meta-value">200% LinkedIn Growth · 3M Impressions</div></div></div>
+  </div>
+</div>
+
+<div class="cs-body">
+  <div class="cs-section reveal">
+    <div class="cs-section-label">Overview</div>
+    <div class="cs-two-col">
+      <div><h2 class="cs-section-title">Building<br/>Credibility in a<br/><span style='color:var(--accent)'>Trust-First<br/>Industry.</span></h2></div>
+      <div class="cs-body-text"><p>Qubicbox is a cybersecurity company with serious technical capability — but no brand presence to match it. In a field where trust and credibility are everything, being invisible online is a commercial liability.</p><p>E-Vast was brought in to build Qubicbox's foundational digital presence from scratch — <strong>establishing them as a credible, knowledgeable authority</strong> in the Nigerian cybersecurity space. We did this through educational content, strategic LinkedIn positioning, and relatable tech creative that made a niche industry accessible.</p><p>The result: zero-to-viral in 72 hours, 3M impressions, and a 200% LinkedIn growth that put Qubicbox on the radar of exactly the right audience.</p></div>
+    </div>
+  </div>
+
+  <div class="cs-section reveal">
+    <div class="cs-section-label">The Brief</div>
+    <div class="cs-pillar-grid">
+      <div class="cs-pillar"><div class="cs-pillar-num">01</div><div class="cs-pillar-title">The Challenge</div><p class="cs-pillar-text">A technically excellent company with no online voice. Zero brand content. No LinkedIn presence. In cybersecurity, where clients need to trust you before they hire you, this invisibility was costing them real business.</p></div>
+      <div class="cs-pillar"><div class="cs-pillar-num">02</div><div class="cs-pillar-title">Our Approach</div><p class="cs-pillar-text">We built a content architecture around three pillars: education (making cybersecurity threats accessible and understandable), credibility (positioning the team as genuine experts), and relatability (tech memes and culturally-relevant content that drove organic sharing without compromising authority).</p></div>
+      <div class="cs-pillar"><div class="cs-pillar-num">03</div><div class="cs-pillar-title">The Outcome</div><p class="cs-pillar-text">3M impressions. 200% LinkedIn growth. A tech meme post that got 3.5K views and drove a wave of new followers from exactly the right audience. Qubicbox went from invisible to recognized in their category within weeks.</p></div>
+    </div>
+  </div>
+
+  
+
+  <div class="cs-section reveal">
+    <div class="cs-section-label">What We Did</div>
+    <h2 class="cs-section-title">The Work.</h2>
+    <div class="cs-services-list"><div class="cs-service-row"><div class="cs-service-dot"></div><div class="cs-service-name">Brand strategy & positioning — defining Qubicbox's voice, tone, and authority territory</div><div class="cs-service-tag">Strategy</div></div><div class="cs-service-row"><div class="cs-service-dot"></div><div class="cs-service-name">LinkedIn content architecture — educational posts, thought leadership, team spotlights</div><div class="cs-service-tag">LinkedIn</div></div><div class="cs-service-row"><div class="cs-service-dot"></div><div class="cs-service-name">Tech meme content — culturally relevant, shareable posts that humanised the brand</div><div class="cs-service-tag">Creative</div></div><div class="cs-service-row"><div class="cs-service-dot"></div><div class="cs-service-name">Content calendar & weekly execution — consistent publishing cadence built over months</div><div class="cs-service-tag">Social</div></div><div class="cs-service-row"><div class="cs-service-dot"></div><div class="cs-service-name">Audience growth strategy — hashtag research, engagement tactics, community building</div><div class="cs-service-tag">Growth</div></div></div>
+  </div>
+
+  <div class="cs-section reveal">
+    <div class="cs-section-label">The Numbers</div>
+    <h2 class="cs-section-title">What It<br/>Delivered.</h2>
+    <div class="cs-results-grid"><div class="cs-result-cell"><div class="cs-result-num">3M<span style="font-size:.5em;color:var(--dim);"></span></div><div class="cs-result-label">Impressions</div><div class="cs-result-desc">Generated through organic content strategy across platforms</div></div><div class="cs-result-cell"><div class="cs-result-num">200<span style="font-size:.5em;color:var(--dim);">%</span></div><div class="cs-result-label">LinkedIn Growth</div><div class="cs-result-desc">Follower growth on LinkedIn from a standing start</div></div><div class="cs-result-cell"><div class="cs-result-num">3.5K<span style="font-size:.5em;color:var(--dim);"></span></div><div class="cs-result-label">Meme Views</div><div class="cs-result-desc">Views on a single tech meme post — highest performing content</div></div><div class="cs-result-cell"><div class="cs-result-num">72<span style="font-size:.5em;color:var(--dim);">hr</span></div><div class="cs-result-label">Zero to Viral</div><div class="cs-result-desc">Time from first post to first viral content piece</div></div><div class="cs-result-cell"><div class="cs-result-num">0<span style="font-size:.5em;color:var(--dim);">→</span></div><div class="cs-result-label">Brand Presence</div><div class="cs-result-desc">Built from zero — no prior online footprint existed</div></div><div class="cs-result-cell"><div class="cs-result-num">100<span style="font-size:.5em;color:var(--dim);">%</span></div><div class="cs-result-label">Organic</div><div class="cs-result-desc">All growth achieved without paid amplification — pure content</div></div></div>
+  </div>
+</div>
+
+<div class="cs-cta-section">
+  <h2 class="cs-cta-title">Ready to build<br/><span>authority?</span></h2>
+  <p class="cs-cta-sub">If your brand has expertise but no voice, we'll build the system that makes people take notice.</p>
+  <div class="cs-cta-buttons">
+    <a href="contact.html" class="btn-primary">Work With E-Vast ↗</a>
+    <a href="projects.html" class="btn-ghost">← Back to Projects</a>
+  </div>
+</div>
+<div class="cs-footer"><span>© 2025 E-Vast Agency</span><a href="projects.html">← All Projects</a></div>
+
+<script>
+const cursor=document.getElementById('cursor');const ring=document.getElementById('cursor-ring');let mX=0,mY=0,rX=0,rY=0;
+document.addEventListener('mousemove',e=>{mX=e.clientX;mY=e.clientY;cursor.style.left=mX+'px';cursor.style.top=mY+'px';});
+(function animRing(){rX+=(mX-rX)*.12;rY+=(mY-rY)*.12;ring.style.left=rX+'px';ring.style.top=rY+'px';requestAnimationFrame(animRing);})();
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+(function(){var btn=document.getElementById('hamburger');var nav=document.getElementById('mobile-nav');if(!btn||!nav)return;btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.classList.toggle('open',o);btn.setAttribute('aria-expanded',String(o));document.body.style.overflow=o?'hidden':'';});nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');btn.classList.remove('open');btn.setAttribute('aria-expanded','false');document.body.style.overflow='';});});})();
+</script>
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Polystar Electronics — E-Vast Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --black:#0a0a0a;--off-white:#f0ede6;--dim:#7a7672;
+  --accent:#e8a020;--border:rgba(240,237,230,0.1);
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+  --font-mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--off-white);font-family:var(--font-body);font-size:16px;line-height:1.6;cursor:none;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+#cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(232,160,32,.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s;}
+body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:18px;height:18px;}
+body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:56px;height:56px;opacity:.4;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:72px;border-bottom:1px solid var(--border);background:rgba(10,10,10,.92);backdrop-filter:blur(12px);}
+.nav-logo{font-family:var(--font-display);font-size:28px;letter-spacing:.06em;color:var(--off-white);text-decoration:none;}
+.nav-logo span{color:var(--accent);}
+.nav-back{font-family:var(--font-mono);font-size:11px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);text-decoration:none;display:flex;align-items:center;gap:10px;transition:color .2s;}
+.nav-back::before{content:'←';font-size:14px;}
+.nav-back:hover{color:var(--off-white);}
+.nav-cta-link{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:var(--accent);color:var(--black);padding:10px 24px;text-decoration:none;transition:background .2s;}
+.nav-cta-link:hover{background:#f0b030;}
+
+/* HERO */
+.cs-hero{
+  min-height:100vh;
+  padding:72px 48px 0;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  position:relative;overflow:hidden;
+  border-bottom:1px solid var(--border);
+}
+.cs-hero-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(145deg,#1c0800 0%,#3d1500 60%,#5a2a00 100%);
+  opacity:.35;
+}
+.cs-hero-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(240,237,230,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,.025) 1px,transparent 1px);
+  background-size:80px 80px;pointer-events:none;
+}
+.cs-hero-wm{
+  position:absolute;font-family:var(--font-display);
+  font-size:clamp(120px,20vw,280px);
+  color:rgba(240,237,230,.03);
+  right:-40px;top:50%;transform:translateY(-50%);
+  pointer-events:none;letter-spacing:.04em;line-height:1;
+}
+.cs-hero-inner{position:relative;z-index:2;padding-bottom:72px;}
+.cs-tag{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:14px;margin-bottom:28px;opacity:0;animation:fadeUp .8s ease .2s forwards;}
+.cs-tag::before{content:'';display:block;width:28px;height:1px;background:var(--accent);}
+.cs-hero-title{font-family:var(--font-display);font-size:clamp(52px,9vw,130px);line-height:.9;letter-spacing:.01em;color:var(--off-white);margin-bottom:48px;opacity:0;animation:fadeUp .9s ease .4s forwards;}
+.cs-hero-title span{color:var(--accent);}
+.cs-hero-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);opacity:0;animation:fadeUp .9s ease .6s forwards;}
+.cs-meta-cell{background:rgba(10,10,10,.7);padding:28px 32px;backdrop-filter:blur(8px);}
+.cs-meta-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;}
+.cs-meta-value{font-size:15px;font-weight:300;color:var(--off-white);line-height:1.4;}
+
+/* CONTENT SECTIONS */
+.cs-body{max-width:1200px;margin:0 auto;padding:0 48px;}
+
+.cs-section{padding:96px 0;border-bottom:1px solid var(--border);}
+.cs-section:last-child{border-bottom:none;}
+.cs-section-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.cs-section-label::before{content:'';display:block;width:28px;height:1px;background:var(--accent);}
+.cs-section-title{font-family:var(--font-display);font-size:clamp(40px,5.5vw,72px);line-height:.94;letter-spacing:.01em;color:var(--off-white);margin-bottom:40px;}
+
+/* Two column layout */
+.cs-two-col{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.cs-body-text{font-size:16px;font-weight:300;color:var(--dim);line-height:1.9;}
+.cs-body-text strong{color:var(--off-white);font-weight:400;}
+.cs-body-text p+p{margin-top:20px;}
+
+/* Challenge / Solution / Result blocks */
+.cs-pillar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);}
+.cs-pillar{background:#0e0e0e;padding:44px 36px;position:relative;overflow:hidden;transition:background .25s;}
+.cs-pillar:hover{background:#111;}
+.cs-pillar::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;}
+.cs-pillar:hover::before{transform:scaleX(1);}
+.cs-pillar-num{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;color:var(--accent);margin-bottom:20px;}
+.cs-pillar-title{font-family:var(--font-display);font-size:32px;letter-spacing:.03em;color:var(--off-white);margin-bottom:16px;line-height:1;}
+.cs-pillar-text{font-size:14px;font-weight:300;color:var(--dim);line-height:1.75;}
+
+/* Results metrics */
+.cs-results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin-top:48px;}
+.cs-result-cell{background:var(--black);padding:48px 40px;position:relative;overflow:hidden;}
+.cs-result-cell::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--accent);transition:width .45s ease;}
+.cs-result-cell:hover::after{width:100%;}
+.cs-result-num{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);color:var(--accent);line-height:1;margin-bottom:10px;}
+.cs-result-label{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;}
+.cs-result-desc{font-size:14px;font-weight:300;color:rgba(240,237,230,.6);line-height:1.6;}
+
+/* What we did — services list */
+.cs-services-list{display:flex;flex-direction:column;gap:2px;background:var(--border);}
+.cs-service-row{background:#0e0e0e;padding:24px 32px;display:flex;align-items:center;gap:20px;transition:background .2s;}
+.cs-service-row:hover{background:#111;}
+.cs-service-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;flex-shrink:0;}
+.cs-service-name{font-size:15px;font-weight:300;color:var(--off-white);}
+.cs-service-tag{margin-left:auto;font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);}
+
+/* Quote / testimonial pull */
+.cs-quote{border-left:3px solid var(--accent);padding:32px 40px;background:rgba(232,160,32,.04);margin:48px 0;}
+.cs-quote-text{font-family:var(--font-display);font-size:clamp(24px,3.5vw,40px);letter-spacing:.02em;color:var(--off-white);line-height:1.1;margin-bottom:20px;}
+.cs-quote-attr{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);}
+
+/* Timeline */
+.cs-timeline{display:flex;flex-direction:column;gap:0;}
+.cs-timeline-item{display:grid;grid-template-columns:120px 1fr;gap:32px;padding:36px 0;border-bottom:1px solid var(--border);}
+.cs-timeline-item:last-child{border-bottom:none;}
+.cs-tl-phase{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);padding-top:4px;}
+.cs-tl-title{font-family:var(--font-display);font-size:26px;letter-spacing:.03em;color:var(--off-white);margin-bottom:10px;}
+.cs-tl-desc{font-size:14px;font-weight:300;color:var(--dim);line-height:1.75;}
+
+/* CTA BLOCK */
+.cs-cta-section{padding:100px 48px;background:#0d0d0d;border-top:1px solid var(--border);text-align:center;display:flex;flex-direction:column;align-items:center;gap:32px;}
+.cs-cta-title{font-family:var(--font-display);font-size:clamp(48px,8vw,100px);line-height:.92;color:var(--off-white);}
+.cs-cta-title span{color:var(--accent);}
+.cs-cta-sub{font-size:16px;font-weight:300;color:var(--dim);max-width:480px;line-height:1.7;}
+.cs-cta-buttons{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+.btn-primary{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;background:var(--accent);color:var(--black);border:none;padding:16px 40px;cursor:none;font-weight:400;transition:background .2s,transform .15s;text-decoration:none;display:inline-block;}
+.btn-primary:hover{background:#f0b030;transform:translateY(-2px);}
+.btn-ghost{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;background:transparent;color:var(--off-white);border:1px solid var(--border);padding:16px 40px;cursor:none;transition:border-color .2s,transform .15s;text-decoration:none;display:inline-block;}
+.btn-ghost:hover{border-color:rgba(240,237,230,.4);transform:translateY(-2px);}
+
+/* FOOTER */
+.cs-footer{padding:28px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.cs-footer span{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--dim);}
+.cs-footer a{font-family:var(--font-mono);font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--dim);text-decoration:none;transition:color .2s;}
+.cs-footer a:hover{color:var(--off-white);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.1s;}.rd2{transition-delay:.2s;}.rd3{transition-delay:.3s;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
+
+/* MOBILE */
+.mobile-menu-btn{display:none;}
+.mobile-nav{display:none;}
+@media(max-width:768px){
+  body{cursor:auto;}
+  #cursor,#cursor-ring{display:none;}
+  nav{padding:0 20px;height:60px;}
+  .nav-back span,.nav-cta-link{font-size:10px;}
+  .nav-logo{font-size:20px;}
+  .mobile-menu-btn{display:flex;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:6px;z-index:201;margin-left:auto;}
+  .mobile-menu-btn span{display:block;width:24px;height:1.5px;background:#f0ede6;transition:transform .3s,opacity .3s;}
+  .mobile-menu-btn.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+  .mobile-menu-btn.open span:nth-child(2){opacity:0;}
+  .mobile-menu-btn.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+  .mobile-nav{display:flex;position:fixed;inset:0;background:#0a0a0a;z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:0;opacity:0;pointer-events:none;transition:opacity .35s ease;}
+  .mobile-nav.open{opacity:1;pointer-events:all;}
+  .mobile-nav a{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:.04em;color:#f0ede6;text-decoration:none;padding:10px 0;width:80%;text-align:center;border-bottom:1px solid rgba(240,237,230,.08);transition:color .2s;}
+  .mobile-nav a:last-child{border-bottom:none;}
+  .mobile-nav a:hover,.mobile-nav a.active{color:#e8a020;}
+  .mobile-nav .mob-cta{margin-top:24px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;background:#e8a020;color:#0a0a0a;padding:14px 36px;border-bottom:none;}
+
+  .cs-hero{padding:60px 20px 0;}
+  .cs-hero-inner{padding-bottom:0;}
+  .cs-hero-title{font-size:clamp(44px,13vw,72px);}
+  .cs-hero-meta{grid-template-columns:1fr 1fr;}
+  .cs-meta-cell{padding:20px;}
+  .cs-body{padding:0 20px;}
+  .cs-section{padding:64px 0;}
+  .cs-two-col{grid-template-columns:1fr;gap:36px;}
+  .cs-pillar-grid{grid-template-columns:1fr;}
+  .cs-results-grid{grid-template-columns:1fr 1fr;}
+  .cs-timeline-item{grid-template-columns:80px 1fr;gap:16px;}
+  .cs-cta-section{padding:72px 20px;}
+  .cs-cta-title{font-size:clamp(40px,11vw,72px);}
+  .cs-cta-buttons{flex-direction:column;align-items:center;}
+  .btn-primary,.btn-ghost{text-align:center;width:100%;max-width:320px;}
+  .cs-footer{padding:24px 20px;flex-direction:column;gap:10px;text-align:center;}
+}
+@media(max-width:480px){
+  .cs-hero-meta{grid-template-columns:1fr;}
+  .cs-results-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a class="nav-logo" href="index.html"><span>E</span>-VAST</a>
+  <a class="nav-back" href="projects.html">Back to Projects</a>
+  <a class="nav-cta-link" href="contact.html">Work With Us</a>
+  <button class="mobile-menu-btn" id="hamburger" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-nav" id="mobile-nav">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="projects.html" class="active">Projects</a>
+  <a href="contact.html">Contact</a>
+  <a href="contact.html" class="mob-cta">Get Started</a>
+</div>
+
+<!-- HERO -->
+<div class="cs-hero">
+  <div class="cs-hero-bg"></div>
+  <div class="cs-hero-grid"></div>
+  <div class="cs-hero-wm">POLYSTAR</div>
+  <div class="cs-hero-inner">
+    <div class="cs-tag">Consumer Electronics · PR · Brand Growth · Retainer</div>
+    <h1 class="cs-hero-title">Polystar<br/>Electronics<br/><span>Ogba</span></h1>
+    <div class="cs-hero-meta">
+      <div class="cs-meta-cell">
+        <div class="cs-meta-label">Client</div>
+        <div class="cs-meta-value">Polystar Electronics — Ogba Branch</div>
+      </div>
+      <div class="cs-meta-cell">
+        <div class="cs-meta-label">Services</div>
+        <div class="cs-meta-value">PR · Paid Media · SEO · Sales Funnel · Brand Growth</div>
+      </div>
+      <div class="cs-meta-cell">
+        <div class="cs-meta-label">Industry</div>
+        <div class="cs-meta-value">Consumer Electronics · Retail</div>
+      </div>
+      <div class="cs-meta-cell">
+        <div class="cs-meta-label">Engagement Type</div>
+        <div class="cs-meta-value">Long-term Retainer</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cs-body">
+
+  <!-- OVERVIEW -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">Overview</div>
+    <div class="cs-two-col">
+      <div>
+        <h2 class="cs-section-title">Turning Foot Traffic Into<br/>a Digital<br/><span style="color:var(--accent)">Revenue Machine.</span></h2>
+      </div>
+      <div class="cs-body-text">
+        <p>Polystar Electronics Ogba was a well-known physical store with strong walk-in traffic — but their online presence was virtually non-existent. They had no structured digital sales funnel, no SEO strategy, and no systematic approach to converting online interest into qualified buyers.</p>
+        <p>E-Vast was brought in as a full growth partner on a retainer basis. Our mandate was clear: <strong>build a digital revenue engine from the ground up</strong> — one that would generate consistent inbound leads, increase retail velocity, and ultimately make online sales a major contributor to total revenue.</p>
+        <p>Over the course of the engagement, we built, tested, and scaled a system that generated over <strong>₦225M in revenue</strong>, 900+ qualified inbound leads, and made online sales account for 60% of total revenue.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHALLENGE / SOLUTION / RESULT -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">The Brief</div>
+    <div class="cs-pillar-grid">
+      <div class="cs-pillar">
+        <div class="cs-pillar-num">01</div>
+        <div class="cs-pillar-title">The Challenge</div>
+        <p class="cs-pillar-text">A thriving physical store with zero digital infrastructure. No lead generation system. No SEO presence. No paid media. No way to capture online demand or convert it into sales — while competitors were moving aggressively online.</p>
+      </div>
+      <div class="cs-pillar">
+        <div class="cs-pillar-num">02</div>
+        <div class="cs-pillar-title">Our Approach</div>
+        <p class="cs-pillar-text">We designed and implemented a full-stack digital growth system: SEO-optimised content, paid media campaigns on Meta and Google, a structured sales funnel with lead capture and follow-up sequences, and a social media presence that built trust with potential buyers before they even made contact.</p>
+      </div>
+      <div class="cs-pillar">
+        <div class="cs-pillar-num">03</div>
+        <div class="cs-pillar-title">The Outcome</div>
+        <p class="cs-pillar-text">₦225M+ in revenue generated. 900+ qualified inbound leads. Online sales grew from 0% to 60% of total revenue. Retail velocity increased by 20%. A store that once depended entirely on walk-in customers was now running a self-sustaining digital sales machine.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT WE DID -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">What We Did</div>
+    <h2 class="cs-section-title">The Full<br/>System.</h2>
+    <div class="cs-services-list">
+      <div class="cs-service-row">
+        <div class="cs-service-dot"></div>
+        <div class="cs-service-name">Organic SEO Optimisation — keyword research, on-page SEO, content strategy to capture high-intent search traffic</div>
+        <div class="cs-service-tag">SEO</div>
+      </div>
+      <div class="cs-service-row">
+        <div class="cs-service-dot"></div>
+        <div class="cs-service-name">Paid Media Management — Meta and Google ad campaigns targeting in-market electronics buyers in Lagos</div>
+        <div class="cs-service-tag">Paid Media</div>
+      </div>
+      <div class="cs-service-row">
+        <div class="cs-service-dot"></div>
+        <div class="cs-service-name">Full Sales Funnel Build — lead capture pages, WhatsApp follow-up sequences, conversion optimisation</div>
+        <div class="cs-service-tag">Funnel</div>
+      </div>
+      <div class="cs-service-row">
+        <div class="cs-service-dot"></div>
+        <div class="cs-service-name">Social Media Strategy & Execution — trust-building content, product showcases, customer proof posts</div>
+        <div class="cs-service-tag">Social</div>
+      </div>
+      <div class="cs-service-row">
+        <div class="cs-service-dot"></div>
+        <div class="cs-service-name">Brand Growth Management — monthly reporting, strategy refinement, scaling what worked</div>
+        <div class="cs-service-tag">Retainer</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT UNFOLDED -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">How It Unfolded</div>
+    <h2 class="cs-section-title">Phase by<br/>Phase.</h2>
+    <div class="cs-timeline">
+      <div class="cs-timeline-item">
+        <div class="cs-tl-phase">Phase 01</div>
+        <div>
+          <div class="cs-tl-title">Audit & Foundation</div>
+          <p class="cs-tl-desc">Full audit of existing online presence (or lack thereof). Competitor analysis. Keyword mapping for high-intent electronics search terms in Lagos. Set up tracking, analytics, and lead capture infrastructure from scratch.</p>
+        </div>
+      </div>
+      <div class="cs-timeline-item">
+        <div class="cs-tl-phase">Phase 02</div>
+        <div>
+          <div class="cs-tl-title">Funnel Build & First Campaigns</div>
+          <p class="cs-tl-desc">Built and launched the first Meta ad campaigns targeting in-market buyers. Simultaneously began SEO content publishing. Created WhatsApp-based follow-up sequences to convert inbound enquiries into confirmed sales.</p>
+        </div>
+      </div>
+      <div class="cs-timeline-item">
+        <div class="cs-tl-phase">Phase 03</div>
+        <div>
+          <div class="cs-tl-title">Scale & Optimise</div>
+          <p class="cs-tl-desc">Doubled down on the ad sets generating the lowest CPL. Expanded to Google Shopping. Built out social proof content — customer testimonials, unboxing videos, product comparison posts — to warm up cold traffic and increase conversion rates.</p>
+        </div>
+      </div>
+      <div class="cs-timeline-item">
+        <div class="cs-tl-phase">Phase 04</div>
+        <div>
+          <div class="cs-tl-title">Retainer — Sustained Growth</div>
+          <p class="cs-tl-desc">Monthly strategy sessions. Weekly performance reporting. Continuous testing of new creative angles, offers, and audience segments. The system compound over time — each month building on the last, with online revenue growing consistently quarter over quarter.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">The Numbers</div>
+    <h2 class="cs-section-title">What It<br/>Delivered.</h2>
+    <div class="cs-results-grid">
+      <div class="cs-result-cell">
+        <div class="cs-result-num">₦225M<span style="font-size:.5em;color:var(--dim);">+</span></div>
+        <div class="cs-result-label">Revenue Generated</div>
+        <div class="cs-result-desc">Total online revenue generated across the engagement period</div>
+      </div>
+      <div class="cs-result-cell">
+        <div class="cs-result-num">900<span style="font-size:.5em;color:var(--dim);">+</span></div>
+        <div class="cs-result-label">Qualified Inbound Leads</div>
+        <div class="cs-result-desc">High-intent leads captured through paid media and SEO, converted via sales funnel</div>
+      </div>
+      <div class="cs-result-cell">
+        <div class="cs-result-num">60<span style="font-size:.5em;color:var(--dim);">%</span></div>
+        <div class="cs-result-label">Online Revenue Share</div>
+        <div class="cs-result-desc">Online sales grew from 0% to 60% of total store revenue</div>
+      </div>
+      <div class="cs-result-cell">
+        <div class="cs-result-num">20<span style="font-size:.5em;color:var(--dim);">%</span></div>
+        <div class="cs-result-label">Retail Velocity Increase</div>
+        <div class="cs-result-desc">Overall stock turnover rate increased due to combined online/offline demand generation</div>
+      </div>
+      <div class="cs-result-cell">
+        <div class="cs-result-num">4<span style="font-size:.5em;color:var(--dim);">×</span></div>
+        <div class="cs-result-label">ROAS on Paid Media</div>
+        <div class="cs-result-desc">Average return on ad spend across Meta and Google campaigns</div>
+      </div>
+      <div class="cs-result-cell">
+        <div class="cs-result-num">24<span style="font-size:.5em;color:var(--dim);">mo</span></div>
+        <div class="cs-result-label">Engagement Duration</div>
+        <div class="cs-result-desc">Long-term retainer that compounded results month over month</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIAL -->
+  <div class="cs-section reveal">
+    <div class="cs-quote">
+      <div class="cs-quote-text">"They not only optimized our sales processes but they acted as a growth partner, massively growing our e-commerce sales."</div>
+      <div class="cs-quote-attr">Titilayo Oshikoya — Head of Operations, Polystar Electronics Ogba</div>
+    </div>
+  </div>
+
+</div><!-- /cs-body -->
+
+<!-- CTA -->
+<div class="cs-cta-section">
+  <h2 class="cs-cta-title">Want results<br/>like <span>these?</span></h2>
+  <p class="cs-cta-sub">Tell us about your brand and your goals. If we're the right fit, we'll build the system that gets you there.</p>
+  <div class="cs-cta-buttons">
+    <a href="contact.html" class="btn-primary">Work With E-Vast ↗</a>
+    <a href="projects.html" class="btn-ghost">← Back to Projects</a>
+  </div>
+</div>
+
+<div class="cs-footer">
+  <span>© 2025 E-Vast Agency</span>
+  <a href="projects.html">← All Projects</a>
+</div>
+
+<script>
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let mX=0,mY=0,rX=0,rY=0;
+document.addEventListener('mousemove',e=>{mX=e.clientX;mY=e.clientY;cursor.style.left=mX+'px';cursor.style.top=mY+'px';});
+(function animRing(){rX+=(mX-rX)*.12;rY+=(mY-rY)*.12;ring.style.left=rX+'px';ring.style.top=rY+'px';requestAnimationFrame(animRing);})();
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+(function(){var btn=document.getElementById('hamburger');var nav=document.getElementById('mobile-nav');if(!btn||!nav)return;btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.classList.toggle('open',o);btn.setAttribute('aria-expanded',String(o));document.body.style.overflow=o?'hidden':'';});nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');btn.classList.remove('open');btn.setAttribute('aria-expanded','false');document.body.style.overflow='';});});})();
+</script>
+</body>
+</html>
