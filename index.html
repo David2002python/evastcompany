@@ -242,7 +242,6 @@ nav {
   position: relative;
 }
 
-/* edge fade */
 #brands::before,
 #brands::after {
   content: '';
@@ -264,7 +263,6 @@ nav {
   background: linear-gradient(to left, var(--black), transparent);
 }
 
-/* track animation */
 .ticker-track {
   display: flex;
   width: max-content;
@@ -275,47 +273,30 @@ nav {
   animation-play-state: paused;
 }
 
-/* EACH ITEM (logo container) */
 .ticker-item {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 40px;
-  height: 48px; /* 👈 controls vertical balance */
+  height: 48px;
   border-right: 1px solid var(--border);
 }
 
-/* LOGO IMAGE */
 .ticker-item img {
-  max-height: 26px;   /* 👈 consistent height */
-  max-width: 140px;   /* 👈 prevents wide logos from breaking layout */
+  max-height: 26px;
+  max-width: 140px;
   width: auto;
   object-fit: contain;
-
   opacity: 0.6;
   filter: grayscale(100%) brightness(1.4);
   transition: all 0.3s ease;
 }
 
-  @media (max-width: 768px) {
-  .ticker-item {
-    padding: 0 28px;
-    height: 56px;
-  }
-
-  .ticker-item img {
-    max-height: 32px;   /* 👈 bigger on mobile */
-    max-width: 120px;
-  }
-}
-
-/* HOVER EFFECT (premium style) */
 .ticker-item:hover img {
   opacity: 1;
   filter: grayscale(100%) brightness(2);
 }
 
-/* optional accent dot (keep if needed) */
 .ticker-dot {
   width: 5px;
   height: 5px;
@@ -325,10 +306,20 @@ nav {
   flex-shrink: 0;
 }
 
-/* animation */
 @keyframes ticker {
-  0% { transform: translateX(0); }
+  0%  { transform: translateX(0); }
   100% { transform: translateX(-50%); }
+}
+
+@media (max-width: 768px) {
+  .ticker-item {
+    padding: 0 28px;
+    height: 56px;
+  }
+  .ticker-item img {
+    max-height: 32px;
+    max-width: 120px;
+  }
 }
 
 /* ─── SECTION COMMONS ─── */
@@ -1280,7 +1271,7 @@ footer {
     <div class="ticker-item"><img src="nedfur-logo.svg" alt="Nedfur"></div>
     <div class="ticker-item"><span class="ticker-dot"></span>Vast Clothing</div>
     <div class="ticker-item"><span class="ticker-dot"></span>Qubicbox</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>Advant Corporate</div>
+    <div class="ticker-item"><img src="advant-logo.svg" alt="Advant Corporate"></div>
     <div class="ticker-item"><span class="ticker-dot"></span>LBS EMBA 30</div>
     <!-- Duplicated for infinite loop -->
     <div class="ticker-item"><span class="ticker-dot"></span>Polystar Electronics</div>
@@ -1290,7 +1281,7 @@ footer {
     <div class="ticker-item"><img src="nedfur-logo.svg" alt="Nedfur"></div>
     <div class="ticker-item"><span class="ticker-dot"></span>Vast Clothing</div>
     <div class="ticker-item"><span class="ticker-dot"></span>Qubicbox</div>
-    <div class="ticker-item"><span class="ticker-dot"></span>Advant Corporate</div>
+    <div class="ticker-item"><img src="advant-logo.svg" alt="Advant Corporate"></div>
     <div class="ticker-item"><span class="ticker-dot"></span>LBS EMBA 30</div>
   </div>
 </div>
