@@ -241,43 +241,79 @@ nav {
   overflow: hidden;
   position: relative;
 }
-#brands::before, #brands::after {
+
+/* edge fade */
+#brands::before,
+#brands::after {
   content: '';
   position: absolute;
-  top: 0; bottom: 0;
+  top: 0;
+  bottom: 0;
   width: 120px;
   z-index: 2;
   pointer-events: none;
 }
-#brands::before { left: 0; background: linear-gradient(to right, var(--black), transparent); }
-#brands::after { right: 0; background: linear-gradient(to left, var(--black), transparent); }
+
+#brands::before {
+  left: 0;
+  background: linear-gradient(to right, var(--black), transparent);
+}
+
+#brands::after {
+  right: 0;
+  background: linear-gradient(to left, var(--black), transparent);
+}
+
+/* track animation */
 .ticker-track {
   display: flex;
-  gap: 0;
   width: max-content;
   animation: ticker 28s linear infinite;
 }
-.ticker-track:hover { animation-play-state: paused; }
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* EACH ITEM (logo container) */
 .ticker-item {
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 0 56px;
+  height: 44px; /* 👈 controls vertical balance */
   border-right: 1px solid var(--border);
-  font-family: var(--font-display);
-  font-size: 22px;
-  letter-spacing: 0.08em;
-  color: var(--dim);
-  transition: color 0.3s;
-  white-space: nowrap;
 }
-.ticker-item:hover { color: var(--off-white); }
+
+/* LOGO IMAGE */
+.ticker-item img {
+  max-height: 22px;   /* 👈 consistent height */
+  max-width: 120px;   /* 👈 prevents wide logos from breaking layout */
+  width: auto;
+  object-fit: contain;
+
+  opacity: 0.5;
+  filter: grayscale(100%) brightness(1.3);
+  transition: all 0.3s ease;
+}
+
+/* HOVER EFFECT (premium style) */
+.ticker-item:hover img {
+  opacity: 1;
+  filter: grayscale(100%) brightness(1.9);
+}
+
+/* optional accent dot (keep if needed) */
 .ticker-dot {
-  width: 5px; height: 5px;
+  width: 5px;
+  height: 5px;
   background: var(--accent);
   border-radius: 50%;
   margin-right: 16px;
   flex-shrink: 0;
 }
+
+/* animation */
 @keyframes ticker {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
