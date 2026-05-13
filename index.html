@@ -75,13 +75,24 @@ nav {
   backdrop-filter: blur(12px);
 }
 .nav-logo {
-  font-family: var(--font-display);
-  font-size: 28px;
-  letter-spacing: 0.06em;
-  color: var(--off-white);
+  display: flex;
+  align-items: center;
   text-decoration: none;
+  flex-shrink: 0;
 }
-.nav-logo span { color: var(--accent); }
+
+.nav-logo img {
+  height: 36px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .nav-logo img {
+    height: 28px;
+  }
+}
 .nav-links {
   display: flex;
   gap: 40px;
@@ -1223,7 +1234,9 @@ footer {
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="index.html"><span>E</span>-VAST</a>
+  <a class="nav-logo" href="index.html"> 
+    <img src="logo.svg" alt="E-Vast Agency" />
+  </a>
   <ul class="nav-links">
     <li><a href="#" class="active">Home</a></li>
     <li><a href="about.html">About</a></li>
