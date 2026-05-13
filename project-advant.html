@@ -16,10 +16,82 @@ body{background:var(--black);color:var(--off-white);font-family:var(--font-body)
 #cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(232,160,32,.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s;}
 body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:18px;height:18px;}
 body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:56px;height:56px;opacity:.4;}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:72px;border-bottom:1px solid var(--border);background:rgba(10,10,10,.92);backdrop-filter:blur(12px);}
-.nav-logo{font-family:var(--font-display);font-size:28px;letter-spacing:.06em;color:var(--off-white);text-decoration:none;}.nav-logo span{color:var(--accent);}
-.nav-back{font-family:var(--font-mono);font-size:11px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);text-decoration:none;display:flex;align-items:center;gap:10px;transition:color .2s;}.nav-back::before{content:'←';font-size:14px;}.nav-back:hover{color:var(--off-white);}
-.nav-cta-link{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:var(--accent);color:var(--black);padding:10px 24px;text-decoration:none;transition:background .2s;}.nav-cta-link:hover{background:#f0b030;}
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px 0 0;
+  height: 72px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(12px);
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.nav-logo img {
+  height: 56px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  nav {
+    padding: 0 20px 0 0;
+    height: 60px;
+  }
+  .nav-logo {
+    margin-left: 0;
+    padding-left: 0;
+    position: static;
+    left: 0;
+  }
+  .nav-logo img {
+    height: 44px;
+  }
+}
+  
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--off-white); }
+.nav-cta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--accent);
+  color: var(--black);
+  border: none;
+  padding: 10px 24px;
+  cursor: none;
+  font-weight: 400;
+  transition: background 0.2s, transform 0.15s;
+}
+.nav-cta:hover { background: #f0b030; transform: translateY(-1px); }
+  
 .cs-hero{min-height:100vh;padding:72px 48px 0;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;border-bottom:1px solid var(--border);}
 .cs-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;}
 .cs-hero-wm{position:absolute;font-family:var(--font-display);font-size:clamp(120px,20vw,280px);color:rgba(240,237,230,.03);right:-40px;top:50%;transform:translateY(-50%);pointer-events:none;letter-spacing:.04em;line-height:1;}
@@ -107,7 +179,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 <body>
 <div id="cursor"></div><div id="cursor-ring"></div>
 <nav>
-  <a class="nav-logo" href="index.html"><span>E</span>-VAST</a>
+  <a class="nav-logo" href="index.html">
+  <img src="logo.svg" alt="E-Vast Marketing Agency" />
+</a>
   <a class="nav-back" href="projects.html">Back</a>
   <a class="nav-cta-link" href="contact.html">Work With Us</a>
   <button class="mobile-menu-btn" id="hamburger" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
