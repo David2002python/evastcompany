@@ -30,15 +30,82 @@ body{background:var(--black);color:var(--off-white);font-family:var(--font-body)
 body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:18px;height:18px;}
 body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:56px;height:56px;opacity:.4;}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:72px;border-bottom:1px solid var(--border);background:rgba(10,10,10,.88);backdrop-filter:blur(12px);}
-.nav-logo{font-family:var(--font-display);font-size:28px;letter-spacing:.06em;color:var(--off-white);text-decoration:none;}
-.nav-logo span{color:var(--accent);}
-.nav-links{display:flex;gap:40px;list-style:none;}
-.nav-links a{font-family:var(--font-mono);font-size:11px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .2s;}
-.nav-links a:hover,.nav-links a.active{color:var(--off-white);}
-.nav-cta{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:var(--accent);color:var(--black);border:none;padding:10px 24px;cursor:none;transition:background .2s,transform .15s;}
-.nav-cta:hover{background:#f0b030;transform:translateY(-1px);}
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px 0 0;
+  height: 72px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(12px);
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.nav-logo img {
+  height: 56px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  nav {
+    padding: 0 20px 0 0;
+    height: 60px;
+  }
+  .nav-logo {
+    margin-left: 0;
+    padding-left: 0;
+    position: static;
+    left: 0;
+  }
+  .nav-logo img {
+    height: 44px;
+  }
+}
+  
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--off-white); }
+.nav-cta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--accent);
+  color: var(--black);
+  border: none;
+  padding: 10px 24px;
+  cursor: none;
+  font-weight: 400;
+  transition: background 0.2s, transform 0.15s;
+}
+.nav-cta:hover { background: #f0b030; transform: translateY(-1px); }
+
 
 /* ── HERO / MANIFESTO ── */
 .about-hero{
