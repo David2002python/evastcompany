@@ -673,7 +673,28 @@ nav.scrolled {
 }
   
  
-  
+.social-link {
+  width: 40px; height: 40px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dim);
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+.social-link svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  fill: currentColor;
+}
+.social-link:hover {
+  color: var(--black);
+  border-color: var(--accent);
+  background: var(--accent);
+}  
     
   
   
